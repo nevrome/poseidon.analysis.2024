@@ -1,3 +1,7 @@
+# Rendered output
+*.png
+
+
 # History files
 .Rhistory
 .Rapp.history
