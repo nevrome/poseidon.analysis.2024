@@ -9,31 +9,59 @@ paa_raw <- janno::read_janno("~/agora/aadr-archive", validate = F)
 
 pca <- pca_raw %>%
   dplyr::mutate(
-    archive = "PCA",
+    archive = factor("PCA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
-    author_submitted = package %in% pca_author_packages
+    source = dplyr::case_when(
+      package %in% pca_author_packages                    ~ "Author-submitted or maintained",
+      purrr::map_lgl(Publication, \(x) "AADRv424" %in% x) ~ "AADR v42.4",
+      purrr::map_lgl(Publication, \(x) "AADRv443" %in% x) ~ "AADR v44.3",
+      purrr::map_lgl(Publication, \(x) "AADRv50" %in% x)  ~ "AADR v50",
+      TRUE                                                ~ "Manually curated"
+    )
   )
 paa <- paa_raw %>%
   dplyr::mutate(
-    archive = "PAA",
+    archive = factor("PAA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
-    author_submitted = FALSE
+    source = "AADR v54.1.p1"
   )
 
-#### prepare source barplot ####
+source_order <- c(
+  "AADR v42.4", "AADR v44.3", "AADR v50", "AADR v54.1.p1",
+  "Manually curated", "Author-submitted or maintained"
+  ) %>% rev()
+pca$source <- factor(pca$source, levels = source_order)
+paa$source <- factor(paa$source, levels = source_order)
 
-hu <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::group_by(archive, author_submitted) %>%
+#### prepare barplots ####
+
+# packages barplot
+
+# ...
+
+# source barplot
+
+source_count <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::group_by(archive, source) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
-hu %>%
+source_plot <- source_count %>%
   ggplot() +
   geom_bar(
-    mapping = aes(x = archive, y = n, fill = author_submitted),
+    mapping = aes(x = archive, y = n, fill = source),
     stat = "identity"
-  )
+  ) +
+  coord_flip() +
+  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
+  guides(fill = guide_legend(title = "Original data source", reverse = TRUE, nrow = 2)) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    axis.title = element_blank()
+  ) +
+  ggtitle("Number of samples per original data source")
 
-#### prepare dating barplot ####
+# dating barplot
 
 dating_count <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, Date_Type) %>%
@@ -46,32 +74,56 @@ dating_count <- dplyr::bind_rows(pca, paa) %>%
     )
   )
 
-dating_count %>%
+dating_plot <- dating_count %>%
   ggplot() +
   geom_bar(
     mapping = aes(x = archive, y = n, fill = Date_Type),
     stat = "identity"
-  )
+  ) +
+  coord_flip() +
+  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs2")) +
+  guides(fill = guide_legend(title = "Age information", reverse = TRUE, nrow = 2)) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    axis.title = element_blank()
+  ) +
+  ggtitle("Number of samples with age information")
 
-#### mapping barplot ####
+# coords barplot
 
-gu <- dplyr::bind_rows(pca, paa) %>%
+coord_count <- dplyr::bind_rows(pca, paa) %>%
   dplyr::mutate(
     has_coordinates = dplyr::case_when(
-      Date_Type == "modern" ~ "modern",
-      !is.na(Latitude) & !is.na(Longitude) ~ "ancient with coordinates",
-      TRUE ~ "ancient without coordinates"
+      !is.na(Latitude) & !is.na(Longitude) ~ "available",
+      TRUE ~ "missing"
     )
   ) %>%
   dplyr::group_by(archive, has_coordinates) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
-gu %>%
+coord_plot <- coord_count %>%
   ggplot() +
   geom_bar(
     mapping = aes(x = archive, y = n, fill = has_coordinates),
     stat = "identity"
-  )
+  ) +
+  coord_flip() +
+  scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1")) +
+  guides(fill = guide_legend(title = "Coordinate information", reverse = TRUE, nrow = 2)) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    axis.title = element_blank()
+  ) +
+  ggtitle("Number of samples with age information")
+
+# combine barplots
+
+cowplot::plot_grid(
+  source_plot, dating_plot, coord_plot,
+  nrow = 2, ncol = 2
+)
 
 #### package count figure
 
