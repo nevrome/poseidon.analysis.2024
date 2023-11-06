@@ -43,6 +43,7 @@ world_grid_6933_bottom_triangles <- world_grid_6933_basic %>%
 #### prepare sample data ####
 
 pca <- janno::read_janno("~/agora/community-archive", validate = F)
+pca_author_packages <- readr::read_lines("data_tracked/author_submitted_or_maintained_packages.txt")
 paa <- janno::read_janno("~/agora/aadr-archive", validate = F)
 
 pca_ancient_with_coords <- pca %>%
@@ -59,6 +60,10 @@ pca_ancient_sf_6933 <- pca_ancient_with_coords %>%
   sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
   sf::st_transform(6933)
 
+pca_ancient_author_submitted_sf_6933 <- pca_ancient_sf_6933 %>%
+  dplyr::mutate(package = source_file %>% dirname()) %>%
+  dplyr::filter(package %in% pca_author_packages)
+
 paa_ancient_sf_6933 <- paa_ancient_with_coords %>%
   sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
   sf::st_transform(6933)
@@ -66,22 +71,23 @@ paa_ancient_sf_6933 <- paa_ancient_with_coords %>%
 #### perform counting in spatial bins ####
 
 inter_world <- function(x) {
-  x %>% sf::st_intersects(world_grid_6933, .) %>% lengths()
+  sf::st_intersects(world_grid_6933, x) %>% lengths()
 }
 
 world_with_count <- world_grid_6933 %>%
   dplyr::mutate(
     PCA = pca_ancient_sf_6933 %>% inter_world(),
+    PCA_authors_submitted = pca_ancient_author_submitted_sf_6933 %>% inter_world(),
     PAA = paa_ancient_sf_6933 %>% inter_world()
   ) %>%
   tidyr::pivot_longer(
-    tidyselect::one_of("PCA", "PAA"),
+    tidyselect::one_of("PCA", "PAA", "PCA_authors_submitted"),
     names_to = "database", values_to = "count"
   ) %>%
   dplyr::filter(count != 0)
 
-centroid_pca <- world_with_count %>%
-  dplyr::filter(database == "PCA") %>%
+centroid_pca_author_submitted <- world_with_count %>%
+  dplyr::filter(database == "PCA_authors_submitted") %>%
   sf::st_centroid()
 
 triangles_pca <- world_grid_6933_bottom_triangles %>%
@@ -128,8 +134,8 @@ ggplot() +
   ) +
   geom_sf(data = world_6933, fill = NA, color = "black", cex = 0.2) +
   geom_sf(
-    data = centroid_pca,
-    color = "black", size = 0.4
+    data = centroid_pca_author_submitted,
+    color = "#042325", size = 0.4
   ) +
   coord_sf(expand = F, crs = "+proj=natearth") +
   theme_minimal() +
