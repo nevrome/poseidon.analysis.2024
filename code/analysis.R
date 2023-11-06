@@ -109,33 +109,16 @@ ggplot() +
   geom_sf(data = world_6933, fill = "white", color = NA) +
   geom_sf(
     data = triangles_paa, 
-    #mapping = aes(fill = count),
     fill = "#f37748",
     color = NA, size = 0.1,
     alpha = 0.5
   ) +
-  # scale_fill_gradientn(
-  #   colours = c("lightgray", "#f37748"),
-  #   guide = "colorbar"
-  # ) +
-  # guides(
-  #   fill = guide_colorbar(title = "?", barwidth = 20, barheight = 1.5)
-  # ) +
-  # ggnewscale::new_scale_fill() +
   geom_sf(
     data = triangles_pca, 
-    #mapping = aes(fill = count),
     fill = "#095256",
     color = NA, size = 0.1,
     alpha = 0.5
   ) +
-  # scale_fill_gradientn(
-  #   colours = c("lightgray", "#095256"),
-  #   guide = "colorbar"
-  # ) +
-  # guides(
-  #   fill = guide_colorbar(title = "?", barwidth = 20, barheight = 1.5)
-  # ) +
   geom_sf(
     data = world_with_count %>%
       dplyr::group_by(area_id) %>%
@@ -148,10 +131,6 @@ ggplot() +
     data = centroid_pca,
     color = "black", size = 0.4
   ) +
-  # geom_sf_text(
-  #   data = world_with_count, 
-  #   mapping = aes(label = count), color = "black", size = 3
-  # ) +
   coord_sf(expand = F, crs = "+proj=natearth") +
   theme_minimal() +
   theme(
