@@ -1,7 +1,106 @@
 library(magrittr)
 library(ggplot2)
 
-#### prepare spatial data objects ####
+#### prepare sample data ####
+
+pca_raw <- janno::read_janno("~/agora/community-archive", validate = F)
+pca_author_packages <- readr::read_lines("data_tracked/author_submitted_or_maintained_packages.txt")
+paa_raw <- janno::read_janno("~/agora/aadr-archive", validate = F)
+
+pca <- pca_raw %>%
+  dplyr::mutate(
+    archive = "PCA",
+    package = source_file %>% dirname(),
+    author_submitted = package %in% pca_author_packages
+  )
+paa <- paa_raw %>%
+  dplyr::mutate(
+    archive = "PAA",
+    package = source_file %>% dirname(),
+    author_submitted = FALSE
+  )
+
+#### prepare source barplot ####
+
+hu <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::group_by(archive, author_submitted) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+hu %>%
+  ggplot() +
+  geom_bar(
+    mapping = aes(x = archive, y = n, fill = author_submitted),
+    stat = "identity"
+  )
+
+#### prepare dating barplot ####
+
+dating_count <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::group_by(archive, Date_Type) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+  tidyr::replace_na(list(Date_Type = "unknown")) %>%
+  dplyr::mutate(
+    Date_Type = factor(
+      Date_Type,
+      levels = c("modern", "C14", "contextual", "unknown") %>% rev()
+    )
+  )
+
+dating_count %>%
+  ggplot() +
+  geom_bar(
+    mapping = aes(x = archive, y = n, fill = Date_Type),
+    stat = "identity"
+  )
+
+#### mapping barplot ####
+
+gu <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::mutate(
+    has_coordinates = dplyr::case_when(
+      Date_Type == "modern" ~ "modern",
+      !is.na(Latitude) & !is.na(Longitude) ~ "ancient with coordinates",
+      TRUE ~ "ancient without coordinates"
+    )
+  ) %>%
+  dplyr::group_by(archive, has_coordinates) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+gu %>%
+  ggplot() +
+  geom_bar(
+    mapping = aes(x = archive, y = n, fill = has_coordinates),
+    stat = "identity"
+  )
+
+#### package count figure
+
+#### map figure ####
+
+# make sample data spatial
+
+pca_ancient_with_coords <- pca %>%
+  dplyr::filter(Date_Type %in% c("C14", "contextual")) %>%
+  dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
+  tibble::as_tibble()
+
+paa_ancient_with_coords <- paa %>%
+  dplyr::filter(Date_Type %in% c("C14", "contextual")) %>%
+  dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
+  tibble::as_tibble()
+
+pca_ancient_sf_6933 <- pca_ancient_with_coords %>%
+  sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
+  sf::st_transform(6933)
+
+pca_ancient_author_submitted_sf_6933 <- pca_ancient_sf_6933 %>%
+  dplyr::filter(package %in% pca_author_packages)
+
+paa_ancient_sf_6933 <- paa_ancient_with_coords %>%
+  sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
+  sf::st_transform(6933)
+
+# prepare context data
 
 world <- giscoR::gisco_get_countries()
 
@@ -40,35 +139,7 @@ world_grid_6933_bottom_triangles <- world_grid_6933_basic %>%
   }) %>% sf::st_sfc(crs = sf::st_crs(world_grid_6933_basic))) %>%
   sf::st_segmentize(dfMaxLength = 10000)
 
-#### prepare sample data ####
-
-pca <- janno::read_janno("~/agora/community-archive", validate = F)
-pca_author_packages <- readr::read_lines("data_tracked/author_submitted_or_maintained_packages.txt")
-paa <- janno::read_janno("~/agora/aadr-archive", validate = F)
-
-pca_ancient_with_coords <- pca %>%
-  dplyr::filter(Date_Type %in% c("C14", "contextual")) %>%
-  dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
-  tibble::as_tibble()
-  
-paa_ancient_with_coords <- paa %>%
-  dplyr::filter(Date_Type %in% c("C14", "contextual")) %>%
-  dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
-  tibble::as_tibble()
-
-pca_ancient_sf_6933 <- pca_ancient_with_coords %>%
-  sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
-  sf::st_transform(6933)
-
-pca_ancient_author_submitted_sf_6933 <- pca_ancient_sf_6933 %>%
-  dplyr::mutate(package = source_file %>% dirname()) %>%
-  dplyr::filter(package %in% pca_author_packages)
-
-paa_ancient_sf_6933 <- paa_ancient_with_coords %>%
-  sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
-  sf::st_transform(6933)
-
-#### perform counting in spatial bins ####
+# perform counting in spatial bins
 
 inter_world <- function(x) {
   sf::st_intersects(world_grid_6933, x) %>% lengths()
@@ -108,7 +179,7 @@ triangles_paa <- world_grid_6933_top_triangles %>%
     by = "area_id"
   )
 
-#### world map ###
+# construct map figure
 
 ggplot() +
   geom_sf(data = extent_world_6933, fill = "#c2eeff", color = NA, alpha = 0.5) +
