@@ -12,7 +12,7 @@ pca <- pca_raw %>%
     archive = factor("PCA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
     source = dplyr::case_when(
-      package %in% pca_author_packages                    ~ "Author-submitted or maintained",
+      package %in% pca_author_packages                    ~ "Author-maintained",
       purrr::map_lgl(Publication, \(x) "AADRv424" %in% x) ~ "AADR v42.4",
       purrr::map_lgl(Publication, \(x) "AADRv443" %in% x) ~ "AADR v44.3",
       purrr::map_lgl(Publication, \(x) "AADRv50" %in% x)  ~ "AADR v50",
@@ -30,7 +30,7 @@ paa <- paa_raw %>%
 
 source_order <- c(
   "AADR v42.4", "AADR v44.3", "AADR v50", "AADR v54.1.p1",
-  "Manually curated", "Author-submitted or maintained"
+  "Manually curated", "Author-maintained"
   ) %>% rev()
 pca$source <- factor(pca$source, levels = source_order)
 paa$source <- factor(paa$source, levels = source_order)
@@ -43,22 +43,29 @@ publication_count <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, package, main_publication) %>%
   dplyr::summarise(.groups = "drop") %>%
   dplyr::group_by(archive, package) %>%
-  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+  dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+  dplyr::group_by(archive) %>%
+  dplyr::arrange(package) %>%
+  dplyr::mutate(colour_group = rep_len(c("A", "B"), dplyr::n())) %>%
+  dplyr::ungroup()
 
 publication_plot <- publication_count %>%
   ggplot() +
   geom_bar(
-    mapping = aes(x = archive, y = n, fill = package),
+    mapping = aes(x = archive, y = n, group = package, fill = colour_group),
     stat = "identity"
   ) +
-  scale_fill_manual(values = rep_len(c("lightgrey","darkgrey"), 173)) +
+  scale_fill_manual(values = c("A" = "lightgrey", "B" = "darkgrey")) +
+  guides(fill = guide_legend(
+    title = "Alternating colours for the packages"
+  )) +
   coord_flip() +
   theme_bw() +
   theme(
     axis.title = element_blank(),
-    legend.position = "none"
+    legend.position = "bottom"
   ) +
-  ggtitle("Number of main publications per archive")
+  ggtitle("Number of main publications per Poseidon package")
 
 # source barplot
 
@@ -137,7 +144,7 @@ coord_plot <- coord_count %>%
     legend.position = "bottom",
     axis.title = element_blank()
   ) +
-  ggtitle("Number of samples with age information")
+  ggtitle("Number of samples with spatial coordinates")
 
 # combine barplots
 
