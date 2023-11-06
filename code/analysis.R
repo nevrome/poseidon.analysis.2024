@@ -17,13 +17,15 @@ pca <- pca_raw %>%
       purrr::map_lgl(Publication, \(x) "AADRv443" %in% x) ~ "AADR v44.3",
       purrr::map_lgl(Publication, \(x) "AADRv50" %in% x)  ~ "AADR v50",
       TRUE                                                ~ "Manually curated"
-    )
+    ),
+    main_publication = purrr::map_chr(Publication, \(x) x[[1]])
   )
 paa <- paa_raw %>%
   dplyr::mutate(
     archive = factor("PAA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
-    source = "AADR v54.1.p1"
+    source = "AADR v54.1.p1",
+    main_publication = purrr::map_chr(Publication, \(x) x[[1]])
   )
 
 source_order <- c(
@@ -35,9 +37,28 @@ paa$source <- factor(paa$source, levels = source_order)
 
 #### prepare barplots ####
 
-# packages barplot
+# publications barplot
 
-# ...
+publication_count <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::group_by(archive, package, main_publication) %>%
+  dplyr::summarise(.groups = "drop") %>%
+  dplyr::group_by(archive, package) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+publication_plot <- publication_count %>%
+  ggplot() +
+  geom_bar(
+    mapping = aes(x = archive, y = n, fill = package),
+    stat = "identity"
+  ) +
+  scale_fill_manual(values = rep_len(c("lightgrey","darkgrey"), 173)) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    axis.title = element_blank(),
+    legend.position = "none"
+  ) +
+  ggtitle("Number of main publications per archive")
 
 # source barplot
 
@@ -53,7 +74,7 @@ source_plot <- source_count %>%
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
-  guides(fill = guide_legend(title = "Original data source", reverse = TRUE, nrow = 2)) +
+  guides(fill = guide_legend(title = "Original data source", reverse = TRUE)) +
   theme_bw() +
   theme(
     legend.position = "bottom",
@@ -82,7 +103,7 @@ dating_plot <- dating_count %>%
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs2")) +
-  guides(fill = guide_legend(title = "Age information", reverse = TRUE, nrow = 2)) +
+  guides(fill = guide_legend(title = "Age information", reverse = TRUE)) +
   theme_bw() +
   theme(
     legend.position = "bottom",
@@ -110,7 +131,7 @@ coord_plot <- coord_count %>%
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1")) +
-  guides(fill = guide_legend(title = "Coordinate information", reverse = TRUE, nrow = 2)) +
+  guides(fill = guide_legend(title = "Coordinate information", reverse = TRUE)) +
   theme_bw() +
   theme(
     legend.position = "bottom",
@@ -121,8 +142,8 @@ coord_plot <- coord_count %>%
 # combine barplots
 
 cowplot::plot_grid(
-  source_plot, dating_plot, coord_plot,
-  nrow = 2, ncol = 2
+  publication_plot, source_plot, dating_plot, coord_plot,
+  nrow = 2, ncol = 2, align = "hv", axis = "tb"
 )
 
 #### package count figure
