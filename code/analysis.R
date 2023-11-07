@@ -4,7 +4,7 @@ library(ggplot2)
 #### prepare sample data ####
 
 pca_raw <- janno::read_janno("~/agora/community-archive", validate = F)
-pca_author_packages <- readr::read_lines("data_tracked/author_submitted_or_maintained_packages.txt")
+pca_author_packages <- readr::read_lines("data_tracked/author_submitted_packages.txt")
 paa_raw <- janno::read_janno("~/agora/aadr-archive", validate = F)
 
 pca <- pca_raw %>%
@@ -12,11 +12,11 @@ pca <- pca_raw %>%
     archive = factor("PCA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
     source = dplyr::case_when(
-      package %in% pca_author_packages                    ~ "Author-maintained",
+      package %in% pca_author_packages                    ~ "Submitted by author",
       purrr::map_lgl(Publication, \(x) "AADRv424" %in% x) ~ "AADR v42.4",
       purrr::map_lgl(Publication, \(x) "AADRv443" %in% x) ~ "AADR v44.3",
       purrr::map_lgl(Publication, \(x) "AADRv50" %in% x)  ~ "AADR v50",
-      TRUE                                                ~ "Manually curated"
+      TRUE                                                ~ "Extracted from paper"
     ),
     main_publication = purrr::map_chr(Publication, \(x) x[[1]])
   )
@@ -30,7 +30,7 @@ paa <- paa_raw %>%
 
 source_order <- c(
   "AADR v42.4", "AADR v44.3", "AADR v50", "AADR v54.1.p1",
-  "Manually curated", "Author-maintained"
+  "Extracted from paper", "Submitted by author"
   ) %>% rev()
 pca$source <- factor(pca$source, levels = source_order)
 paa$source <- factor(paa$source, levels = source_order)
@@ -65,7 +65,7 @@ publication_plot <- publication_count %>%
     axis.title = element_blank(),
     legend.position = "bottom"
   ) +
-  ggtitle("Number of main publications per Poseidon package")
+  ggtitle("Publications per Poseidon package")
 
 # source barplot
 
@@ -87,7 +87,7 @@ source_plot <- source_count %>%
     legend.position = "bottom",
     axis.title = element_blank()
   ) +
-  ggtitle("Number of samples per original data source")
+  ggtitle("Samples per original data source")
 
 # dating barplot
 
@@ -116,7 +116,7 @@ dating_plot <- dating_count %>%
     legend.position = "bottom",
     axis.title = element_blank()
   ) +
-  ggtitle("Number of samples with age information")
+  ggtitle("Samples with age information")
 
 # coords barplot
 
@@ -144,13 +144,25 @@ coord_plot <- coord_count %>%
     legend.position = "bottom",
     axis.title = element_blank()
   ) +
-  ggtitle("Number of samples with spatial coordinates")
+  ggtitle("Samples with spatial coordinates")
 
 # combine barplots
 
-cowplot::plot_grid(
+p <- cowplot::plot_grid(
   publication_plot, source_plot, dating_plot, coord_plot,
-  nrow = 2, ncol = 2, align = "hv", axis = "tb"
+  nrow = 2, ncol = 2, align = "hv", axis = "tb",
+  labels = c("A", "B", "C", "D")
+)
+
+ggsave(
+  paste0("plots/figure_barplots.pdf"),
+  plot = p,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 500, height = 170, units = "mm",
+  limitsize = F,
+  bg = "white"
 )
 
 #### package count figure
