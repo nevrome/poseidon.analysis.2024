@@ -1,6 +1,6 @@
 # Rendered output
 *.png
-
+plots/
 
 # History files
 .Rhistory
