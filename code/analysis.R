@@ -170,21 +170,38 @@ ggsave(
   bg = "white"
 )
 
-#### package count figure
+#### space-time figure ####
 
-#### map figure ####
-
-# make sample data spatial
+# filter datasets to spatiotemporally informed subset
 
 pca_ancient_with_coords <- pca %>%
-  dplyr::filter(Date_Type %in% c("C14", "contextual")) %>%
+  dplyr::filter(
+    Date_Type %in% c("C14", "contextual"),
+    !is.na(Date_BC_AD_Start) & !is.na(Date_BC_AD_Stop)
+  ) %>%
   dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
   tibble::as_tibble()
 
 paa_ancient_with_coords <- paa %>%
-  dplyr::filter(Date_Type %in% c("C14", "contextual")) %>%
+  dplyr::filter(
+    Date_Type %in% c("C14", "contextual"),
+    !is.na(Date_BC_AD_Start) & !is.na(Date_BC_AD_Stop)
+  ) %>%
   dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
   tibble::as_tibble()
+
+# time histogram
+
+dplyr::bind_rows(pca_ancient_with_coords, paa_ancient_with_coords) %>%
+  dplyr::select(Poseidon_ID, tidyselect::starts_with("Date_BC_AD"), package, archive) %>%
+  dplyr::mutate(
+    Date_BC_AD_Median = dplyr::case_when(
+      is.na(Date_BC_AD_Median) ~ (Date_BC_AD_Start + Date_BC_AD_Stop) / 2,
+      TRUE ~ Date_BC_AD_Median
+    )
+  )
+
+# make sample data spatial
 
 pca_ancient_sf_6933 <- pca_ancient_with_coords %>%
   sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
@@ -197,7 +214,7 @@ paa_ancient_sf_6933 <- paa_ancient_with_coords %>%
   sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
   sf::st_transform(6933)
 
-# prepare context data
+# prepare spatial context data
 
 world <- giscoR::gisco_get_countries()
 
@@ -310,7 +327,7 @@ ggplot() +
   theme(
     legend.position = "bottom",
     legend.background = element_blank(),
-    panel.grid.major = element_line(colour = "grey", size = 0.3),
+    panel.grid.major = element_line(colour = "grey", linewidth = 0.3),
     axis.title = element_blank(),
     axis.text = element_blank(),
     plot.title = element_text(face = "bold", size = 14)
