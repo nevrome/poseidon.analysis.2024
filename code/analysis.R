@@ -190,17 +190,6 @@ paa_ancient_with_coords <- paa %>%
   dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
   tibble::as_tibble()
 
-# time histogram
-
-dplyr::bind_rows(pca_ancient_with_coords, paa_ancient_with_coords) %>%
-  dplyr::select(Poseidon_ID, tidyselect::starts_with("Date_BC_AD"), package, archive) %>%
-  dplyr::mutate(
-    Date_BC_AD_Median = dplyr::case_when(
-      is.na(Date_BC_AD_Median) ~ (Date_BC_AD_Start + Date_BC_AD_Stop) / 2,
-      TRUE ~ Date_BC_AD_Median
-    )
-  )
-
 # make sample data spatial
 
 pca_ancient_sf_6933 <- pca_ancient_with_coords %>%
@@ -295,7 +284,7 @@ triangles_paa <- world_grid_6933_top_triangles %>%
 
 # construct map figure
 
-ggplot() +
+map_plot <- ggplot() +
   geom_sf(data = extent_world_6933, fill = "#c2eeff", color = NA, alpha = 0.5) +
   geom_sf(data = world_6933, fill = "white", color = NA) +
   geom_sf(
@@ -333,7 +322,85 @@ ggplot() +
     plot.title = element_text(face = "bold", size = 14)
   ) +
   ggtitle(
-    paste("Spatial distribution of ancient human individuals in the", "?", "database"),
+    paste("Spatial and temporal distribution of ancient samples in PAA and PCA"),
     paste0(Sys.Date(), ", World in Natural Earth projection")
   )
 
+# time histogram
+
+samples_with_mean_age <- dplyr::bind_rows(pca_ancient_with_coords, paa_ancient_with_coords) %>%
+  dplyr::select(Poseidon_ID, tidyselect::starts_with("Date_BC_AD"), package, archive, source) %>%
+  dplyr::mutate(
+    Date_BC_AD_Median = dplyr::case_when(
+      is.na(Date_BC_AD_Median) ~ (Date_BC_AD_Start + Date_BC_AD_Stop) / 2,
+      TRUE ~ Date_BC_AD_Median
+    ),
+    age_cut = cut(
+      Date_BC_AD_Median, 
+      breaks = c(
+        min(Date_BC_AD_Median), 
+        seq(-10000, 2000, 500)
+      ),
+      labels = c("< -10000", paste0("> ", seq(-10000, 1500, 500))),
+      include.lowest = T
+    )
+  )
+
+age_groups_author_submitted <- samples_with_mean_age %>%
+  dplyr::filter(
+    archive == "PCA",
+    source == "Submitted by author"
+  ) %>%
+  dplyr::group_by(age_cut) %>%
+  dplyr::summarise()
+
+age_groups_count <- samples_with_mean_age %>%
+  dplyr::group_by(archive, age_cut) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+#time_hist_plot <- ggplot() +
+time_hist_plot <- ggplot() +
+  geom_bar(
+    data = age_groups_count,
+    mapping = aes(x = age_cut, y = n, fill = archive),
+    stat = "identity",
+    position = "dodge",
+    alpha = 0.7
+  ) +
+  geom_point(
+    data = age_groups_author_submitted,
+    mapping = aes(x = age_cut, y = -20)
+  ) +
+  xlim() +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+    legend.position = "bottom",
+    axis.title.x = element_blank()
+  ) +
+  scale_fill_manual(
+    values = c("PAA" = "#f37748", "PCA" = "#095256")
+  ) +
+  guides(fill = guide_legend(title = "Archive")) +
+  coord_flip() +
+  xlab("age BC/AD")
+
+# combine plots
+
+p <- cowplot::plot_grid(
+  time_hist_plot, map_plot,
+  ncol = 2,
+  #labels = c("A", "B"),
+  rel_widths = c(0.3, 1)
+)
+
+ggsave(
+  paste0("plots/figure_spacetime.pdf"),
+  plot = p,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 500, height = 220, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
