@@ -1,12 +1,8 @@
 2018_Lamnidis_Fennoscandia
-2019_Villalba_Iberia
-2020_BarqueraCurrentBiology
-2020_Nagele_Caribbean
 2020_Rivollat_FranceGermany
 2020_Skourtanioti_NearEast
 2020_Yu_NorthRussia
 2021_CarlhoffNature
 2021_GnecchiRuscone_KazakhSteppe
-2021_Papac_CentralEurope
 2022_GnecchiRuscone_CarpathianBasin
 2022_Gretzinger_AngloSaxons
