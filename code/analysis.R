@@ -35,7 +35,7 @@ source_order <- c(
 pca$source <- factor(pca$source, levels = source_order)
 paa$source <- factor(paa$source, levels = source_order)
 
-#### prepare barplots ####
+#### barplots ####
 
 # publications barplot
 
@@ -45,14 +45,19 @@ publication_count <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, package) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   dplyr::group_by(archive) %>%
-  dplyr::arrange(package) %>%
+  dplyr::arrange(archive, package) %>%
   dplyr::mutate(colour_group = rep_len(c("A", "B"), dplyr::n())) %>%
   dplyr::ungroup()
 
 publication_plot <- publication_count %>%
   ggplot() +
   geom_bar(
-    mapping = aes(x = archive, y = n, group = package, fill = colour_group),
+    mapping = aes(
+      x = archive,
+      y = n,
+      group = factor(package, levels = package),
+      fill = colour_group
+    ),
     stat = "identity"
   ) +
   scale_fill_manual(values = c("A" = "lightgrey", "B" = "darkgrey")) +
