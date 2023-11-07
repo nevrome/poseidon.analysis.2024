@@ -285,18 +285,18 @@ triangles_paa <- world_grid_6933_top_triangles %>%
 # construct map figure
 
 map_plot <- ggplot() +
-  geom_sf(data = extent_world_6933, fill = "#c2eeff", color = NA, alpha = 0.5) +
+  geom_sf(data = extent_world_6933, fill = "#c2eeff", color = "black", alpha = 0.5) +
   geom_sf(data = world_6933, fill = "white", color = NA) +
   geom_sf(
     data = triangles_paa, 
     fill = "#f37748",
-    color = NA, size = 0.1,
+    color = NA,
     alpha = 0.5
   ) +
   geom_sf(
     data = triangles_pca, 
     fill = "#095256",
-    color = NA, size = 0.1,
+    color = NA,
     alpha = 0.5
   ) +
   geom_sf(
@@ -309,7 +309,8 @@ map_plot <- ggplot() +
   geom_sf(data = world_6933, fill = NA, color = "black", cex = 0.2) +
   geom_sf(
     data = centroid_pca_author_submitted,
-    color = "#042325", size = 0.4
+    color = "#042325",
+    shape = 18, size = 2.5
   ) +
   coord_sf(expand = F, crs = "+proj=natearth") +
   theme_minimal() +
@@ -358,7 +359,6 @@ age_groups_count <- samples_with_mean_age %>%
   dplyr::group_by(archive, age_cut) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
-#time_hist_plot <- ggplot() +
 time_hist_plot <- ggplot() +
   geom_bar(
     data = age_groups_count,
@@ -369,19 +369,29 @@ time_hist_plot <- ggplot() +
   ) +
   geom_point(
     data = age_groups_author_submitted,
-    mapping = aes(x = age_cut, y = -20)
+    mapping = aes(x = age_cut, y = -80, color = "Author-submitted samples"),
+    shape = 18, size = 2.5
   ) +
-  xlim() +
+  scale_color_manual("", values = c("Author-submitted samples" = "black")) +
+  ylim(-100, 1500) +
   theme_bw() +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
-    legend.position = "bottom",
+    legend.position = c(.7,0.15),
+    legend.box.background = element_rect(colour = "black", fill = "white"),
+    legend.box.margin = margin(0,0,0,0),
+    legend.background = element_rect(fill = NA),
+    #legend.box = "vertical",
+    legend.spacing.y = unit(-0.1, "cm"),
+    axis.text.y = element_text(angle = 20, hjust = 1, vjust = 0.5),
     axis.title.x = element_blank()
   ) +
   scale_fill_manual(
     values = c("PAA" = "#f37748", "PCA" = "#095256")
   ) +
-  guides(fill = guide_legend(title = "Archive")) +
+  guides(
+    fill = guide_legend(title = "Archive", direction = "horizontal")
+    #color = guide_legend()
+  ) +
   coord_flip() +
   xlab("age BC/AD")
 
@@ -404,3 +414,4 @@ ggsave(
   limitsize = F,
   bg = "white"
 )
+
