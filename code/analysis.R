@@ -39,9 +39,11 @@ paa$source <- factor(paa$source, levels = source_order)
 
 # publications barplot
 
-publication_count <- dplyr::bind_rows(pca, paa) %>%
+publication_per_package <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, package, main_publication) %>%
-  dplyr::summarise(.groups = "drop") %>%
+  dplyr::summarise(.groups = "drop")
+
+publication_count <- publication_per_package %>%
   dplyr::group_by(archive, package) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   dplyr::group_by(archive) %>%
@@ -49,7 +51,19 @@ publication_count <- dplyr::bind_rows(pca, paa) %>%
   dplyr::mutate(colour_group = rep_len(c("A", "B"), dplyr::n())) %>%
   dplyr::ungroup()
 
-publication_plot <- publication_count %>%
+exclusive_publication_count_PAA <- publication_per_package %>%
+  dplyr::filter(archive == "PAA") %>%
+  dplyr::select(-archive) %>%
+  dplyr::group_by(main_publication) %>%
+  dplyr::filter(dplyr::n() == 1) %>%
+  dplyr::ungroup() %>%
+  dplyr::group_by(package) %>%
+  dplyr::summarise(exclusive_n = dplyr::n())
+
+publication_count_with_exclusive_count <- publication_count %>%
+  dplyr::left_join(exclusive_publication_count_PAA, by = "package")
+
+publication_plot <- publication_count_with_exclusive_count %>%
   ggplot() +
   geom_bar(
     mapping = aes(
@@ -59,6 +73,15 @@ publication_plot <- publication_count %>%
       fill = colour_group
     ),
     stat = "identity"
+  ) +
+  geom_label(
+    mapping = aes(
+      x = archive,
+      y = n,
+      group = factor(package, levels = package),
+      label = exclusive_n
+    ),
+    position = position_stack(vjust = 0.5)
   ) +
   scale_fill_manual(values = c("A" = "lightgrey", "B" = "darkgrey")) +
   guides(fill = guide_legend(
