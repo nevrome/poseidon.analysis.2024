@@ -48,6 +48,36 @@ source_order <- c(
 pca$source <- factor(pca$source, levels = source_order)
 paa$source <- factor(paa$source, levels = source_order)
 
+#### sankey plot ####
+
+sankey_input <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::select(Poseidon_ID, archive, source) %>%
+  dplyr::distinct(Poseidon_ID, archive, .keep_all = T) %>%
+  tidyr::pivot_wider(id_cols = "Poseidon_ID", names_from = "archive", values_from = "source") %>%
+  ggsankey::make_long(PCA, PAA)
+
+sankey_plot <- sankey_input %>%
+  ggplot(
+    aes(
+      x = x, 
+      next_x = next_x, 
+      node = node, 
+      next_node = next_node,
+      fill = factor(node),
+      label = node
+    )
+  ) +
+  ggsankey::geom_sankey(
+    flow.alpha = .6,
+  ) +
+  ggsankey::theme_sankey(base_size = 18) +
+  labs(x = NULL) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = .5)) +
+  coord_flip() +
+  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
+  guides(fill = guide_legend(title = "Original data source", reverse = TRUE))
+
 #### barplots ####
 
 # publications barplot
