@@ -7,6 +7,17 @@ pca_raw <- janno::read_janno("~/agora/community-archive", validate = F)
 pca_author_packages <- readr::read_lines("data_tracked/author_submitted_packages.txt")
 paa_raw <- janno::read_janno("~/agora/aadr-archive", validate = F)
 
+cleanPoseidonIDs <- function(x) {
+  x %>%
+    dplyr::mutate(
+      Poseidon_ID = 
+        Poseidon_ID %>%
+          stringr::str_replace(., "\\.HO$", "") %>%
+          stringr::str_replace(., "\\.DG$", "") %>%
+          stringr::str_replace(., "\\.SG$", "")
+    )
+}
+
 pca <- pca_raw %>%
   dplyr::mutate(
     archive = factor("PCA", levels = c("PAA", "PCA") %>% rev()),
@@ -19,14 +30,16 @@ pca <- pca_raw %>%
       TRUE                                                ~ "Extracted from paper"
     ),
     main_publication = purrr::map_chr(Publication, \(x) x[[1]])
-  )
+  ) %>%
+  cleanPoseidonIDs()
 paa <- paa_raw %>%
   dplyr::mutate(
     archive = factor("PAA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
     source = "AADR v54.1.p1",
     main_publication = purrr::map_chr(Publication, \(x) x[[1]])
-  )
+  ) %>%
+  cleanPoseidonIDs()
 
 source_order <- c(
   "AADR v42.4", "AADR v44.3", "AADR v50", "AADR v54.1.p1",
@@ -89,6 +102,7 @@ publication_plot <- publication_count_with_exclusive_count %>%
 # source barplot
 
 source_count <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
   dplyr::group_by(archive, source) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
@@ -111,6 +125,7 @@ source_plot <- source_count %>%
 # dating barplot
 
 dating_count <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
   dplyr::group_by(archive, Date_Type) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   tidyr::replace_na(list(Date_Type = "unknown")) %>%
@@ -140,6 +155,7 @@ dating_plot <- dating_count %>%
 # coords barplot
 
 coord_count <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
   dplyr::mutate(
     has_coordinates = dplyr::case_when(
       !is.na(Latitude) & !is.na(Longitude) ~ "available",
@@ -174,7 +190,7 @@ p <- cowplot::plot_grid(
 )
 
 ggsave(
-  paste0("plots/figure_barplots.pdf"),
+  paste0("plots/figure_barplots3.pdf"),
   plot = p,
   device = "pdf",
   scale = 0.7,
