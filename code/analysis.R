@@ -51,17 +51,10 @@ publication_count <- publication_per_package %>%
   dplyr::mutate(colour_group = rep_len(c("A", "B"), dplyr::n())) %>%
   dplyr::ungroup()
 
-exclusive_publication_count_PAA <- publication_per_package %>%
-  dplyr::filter(archive == "PAA") %>%
-  dplyr::select(-archive) %>%
-  dplyr::group_by(main_publication) %>%
-  dplyr::filter(dplyr::n() == 1) %>%
-  dplyr::ungroup() %>%
-  dplyr::group_by(package) %>%
-  dplyr::summarise(exclusive_n = dplyr::n())
-
-publication_count_with_exclusive_count <- publication_count %>%
-  dplyr::left_join(exclusive_publication_count_PAA, by = "package")
+unique_publication_count <- publication_per_package %>%
+  dplyr::distinct(archive, main_publication, .keep_all = T) %>%
+  dplyr::group_by(archive) %>%
+  dplyr::summarise(unique_n = dplyr::n(), .groups = "drop")
 
 publication_plot <- publication_count_with_exclusive_count %>%
   ggplot() +
@@ -74,14 +67,12 @@ publication_plot <- publication_count_with_exclusive_count %>%
     ),
     stat = "identity"
   ) +
-  geom_label(
+  geom_point(
+    data = unique_publication_count,
     mapping = aes(
       x = archive,
-      y = n,
-      group = factor(package, levels = package),
-      label = exclusive_n
-    ),
-    position = position_stack(vjust = 0.5)
+      y = unique_n
+    )
   ) +
   scale_fill_manual(values = c("A" = "lightgrey", "B" = "darkgrey")) +
   guides(fill = guide_legend(
