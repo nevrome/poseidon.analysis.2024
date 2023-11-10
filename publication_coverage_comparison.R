@@ -28,7 +28,7 @@ publication_overlap <- dplyr::full_join(
   by = c("Publication", "year"),
   suffix = c("_PCA", "_PAA")
 ) %>%
-  dplyr::arrange(year) %>%
+  dplyr::arrange(year, Publication) %>%
   dplyr::mutate(
     plot_group = sort(rep_len(c("A", "B", "C", "D"), length.out = dplyr::n()))
   ) %>%
@@ -37,7 +37,7 @@ publication_overlap <- dplyr::full_join(
     values_to = "archive"
   ) %>%
   dplyr::filter(!is.na(archive)) %>%
-  dplyr::arrange(year) %>%
+  dplyr::arrange(year, Publication) %>%
   dplyr::mutate(
     Publication = factor(Publication, levels = rev(unique(Publication)))
   )
@@ -54,11 +54,12 @@ make_one_figure <- function(x) {
     ) +
     theme_minimal() +
     theme(
-      axis.text.y = element_text(size = 7),
+      axis.text.y = element_text(size = 8, hjust = 0),
       axis.text.x = element_text(size = 8, angle = 90),
       panel.grid.major = element_line(linewidth = 0.5),
       axis.title = element_blank()
-    )
+    ) +
+    scale_y_discrete(position = "right")
 }
 
 p_list <- purrr::map(
@@ -85,3 +86,4 @@ ggsave(
   limitsize = F,
   bg = "white"
 )
+
