@@ -58,6 +58,10 @@ publication_plot <- publication_count %>%
 
 # publication comparison
 
+load("data/bib_data.RData")
+keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
+  dplyr::select(archive, bibtexkey, year)
+
 samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
   dplyr::select(Poseidon_ID, archive, Publication) %>%
   tidyr::unnest(cols = "Publication") %>%
@@ -65,33 +69,59 @@ samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, Publication) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   tidyr::complete(archive, Publication, fill = list(n = 0)) %>%
+  dplyr::left_join(keys_with_years, by = c("archive", "Publication" = "bibtexkey")) %>%
   dplyr::group_split(Publication) %>%
   purrr::map_dfr(
     function(x) {
       if (x$n %>% unique() %>% length() == 1) {
         x %>% dplyr::mutate(availability = "yes")
       } else {
-        less <- x %>%
-          dplyr::slice_min(order_by = n)
-        more <- x %>%
-          dplyr::slice_max(order_by = n)
+        less <- x %>% dplyr::slice_min(order_by = n)
+        more <- x %>% dplyr::slice_max(order_by = n)
         dplyr::bind_rows(
-          x %>% dplyr::mutate(availability = "yes"),
-          less %>% dplyr::mutate(n = more$n - less$n, availability = "no")
+          x %>% dplyr::mutate(availability = "yes", year = more$year),
+          less %>% dplyr::mutate(n = more$n - less$n, year = more$year, availability = "no")
         ) 
       }
     }
+  ) %>%
+  dplyr::arrange(year) %>%
+  dplyr::mutate(
+    Publication = factor(Publication, levels = rev(unique(Publication))),
+    archive = factor(archive, levels = c("PCA", "PAA"))
   )
 
-# samples_per_publication %>% dplyr::filter(!is_there) %>% dplyr::arrange(dplyr::desc(n)) %>% View()
+year_separators <- samples_per_publication %>%
+  dplyr::filter(archive == "PAA") %>%
+  dplyr::group_by(year) %>%
+  dplyr::summarise(n = sum(n)) %>%
+  dplyr::arrange(year) %>%
+  dplyr::mutate(n = cumsum(n)) %>%
+  dplyr::mutate(year = dplyr::lead(year, n = 1, default = 2023)) %>%
+  dplyr::filter(year >= 2012)
 
-#publication_barcode_plot <- 
-  samples_per_publication %>%
+# samples_per_publication %>% dplyr::filter(availability == "no") %>% dplyr::arrange(dplyr::desc(n)) %>% View()
+
+publication_barcode_plot <- samples_per_publication %>%
   ggplot() +
   geom_bar(
     aes(x = archive, y = n, group = Publication, fill = availability),
     stat = "identity"
   ) +
+  ggrepel::geom_text_repel(
+    data = year_separators %>% dplyr::mutate(x = "PCA"),
+    mapping = aes(x = x, y = n, label= year),
+    position = position_nudge(x = -0.5),
+    angle = 90, direction = "x", segment.color = 'transparent',
+    hjust = -0.2,
+    size = 2.4,
+    box.padding = 0.1
+  ) + 
+  geom_point(
+    data = year_separators %>% dplyr::mutate(x = "PCA"),
+    mapping = aes(x = x, y = n),
+    position = position_nudge(x = -0.5)
+  ) + 
   coord_flip() +
   theme_bw() +
   theme(
@@ -100,6 +130,24 @@ samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
   guides(fill = guide_legend(title = "Is the respecitve sample in the archive?"))
+
+p <- cowplot::plot_grid(
+  publication_plot, publication_barcode_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
+  nrow = 3, ncol = 2, align = "v", axis = "tb",
+  labels = c("A", "B", "C", "D", "E", "F")
+)
+
+ggsave(
+  paste0("plots/figure_barplots3.pdf"),
+  plot = p,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 500, height = 220, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
+
 
 # source barplot
 
