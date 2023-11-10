@@ -56,6 +56,51 @@ publication_plot <- publication_count %>%
   )# +
   #ggtitle("Publications per Poseidon package")
 
+# publication comparison
+
+samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::select(Poseidon_ID, archive, Publication) %>%
+  tidyr::unnest(cols = "Publication") %>%
+  dplyr::filter(!grepl("AADR", Publication)) %>%
+  dplyr::group_by(archive, Publication) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+  tidyr::complete(archive, Publication, fill = list(n = 0)) %>%
+  dplyr::group_split(Publication) %>%
+  purrr::map_dfr(
+    function(x) {
+      if (x$n %>% unique() %>% length() == 1) {
+        x %>% dplyr::mutate(availability = "yes")
+      } else {
+        less <- x %>%
+          dplyr::slice_min(order_by = n)
+        more <- x %>%
+          dplyr::slice_max(order_by = n)
+        dplyr::bind_rows(
+          x %>% dplyr::mutate(availability = "yes"),
+          less %>% dplyr::mutate(n = more$n - less$n, availability = "no")
+        ) 
+      }
+    }
+  )
+
+# samples_per_publication %>% dplyr::filter(!is_there) %>% dplyr::arrange(dplyr::desc(n)) %>% View()
+
+#publication_barcode_plot <- 
+  samples_per_publication %>%
+  ggplot() +
+  geom_bar(
+    aes(x = archive, y = n, group = Publication, fill = availability),
+    stat = "identity"
+  ) +
+  coord_flip() +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    axis.title = element_blank()
+  ) +
+  scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
+  guides(fill = guide_legend(title = "Is the respecitve sample in the archive?"))
+
 # source barplot
 
 source_count <- dplyr::bind_rows(pca, paa) %>%
@@ -183,7 +228,7 @@ sources_sankey_plot <- sankey_sources_input %>%
 # combine plots
 
 p <- cowplot::plot_grid(
-  publication_plot, publication_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
+  publication_plot, publication_barcode_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
   nrow = 3, ncol = 2, align = "v", axis = "tb",
   labels = c("A", "B", "C", "D", "E", "F")
 )
