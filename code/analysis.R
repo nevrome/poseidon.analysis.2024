@@ -5,60 +5,6 @@ library(ggplot2)
 
 load("data/janno_data.RData")
 
-#### publication-wise analysis ####
-
-sankey_publications <- pcapaa %>%
-  dplyr::group_by(archive, main_publication) %>%
-  dplyr::summarise(.groups = "drop") %>%
-  dplyr::mutate(value = T) %>%
-  tidyr::pivot_wider(id_cols = "main_publication", names_from = "archive") %>%
-  ggsankey::make_long(main_publication, PCA, PAA)
-
-sankey_publications %>%
-  ggplot(
-    aes(
-      x = x, 
-      next_x = next_x, 
-      node = node, 
-      next_node = next_node,
-      fill = factor(node),
-      label = node
-    )
-  ) +
-  ggsankey::geom_sankey(
-  ) +
-  theme(legend.position = "none")
-
-#### sankey plot ####
-
-sankey_input <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::select(Poseidon_ID, archive, source) %>%
-  dplyr::distinct(Poseidon_ID, archive, .keep_all = T) %>%
-  tidyr::pivot_wider(id_cols = "Poseidon_ID", names_from = "archive", values_from = "source") %>%
-  ggsankey::make_long(PCA, PAA)
-
-sankey_plot <- sankey_input %>%
-  ggplot(
-    aes(
-      x = x, 
-      next_x = next_x, 
-      node = node, 
-      next_node = next_node,
-      fill = factor(node),
-      label = node
-    )
-  ) +
-  ggsankey::geom_sankey(
-    flow.alpha = .6,
-  ) +
-  ggsankey::theme_sankey(base_size = 18) +
-  labs(x = NULL) +
-  theme(legend.position = "bottom",
-        plot.title = element_text(hjust = .5)) +
-  coord_flip() +
-  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
-  guides(fill = guide_legend(title = "Original data source", reverse = TRUE))
-
 #### barplots ####
 
 # publications barplot
@@ -80,7 +26,7 @@ unique_publication_count <- publication_per_package %>%
   dplyr::group_by(archive) %>%
   dplyr::summarise(unique_n = dplyr::n(), .groups = "drop")
 
-publication_plot <- publication_count_with_exclusive_count %>%
+publication_plot <- publication_count %>%
   ggplot() +
   geom_bar(
     mapping = aes(
@@ -107,13 +53,13 @@ publication_plot <- publication_count_with_exclusive_count %>%
   theme(
     axis.title = element_blank(),
     legend.position = "bottom"
-  ) +
-  ggtitle("Publications per Poseidon package")
+  )# +
+  #ggtitle("Publications per Poseidon package")
 
 # source barplot
 
 source_count <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
+  dplyr::distinct(archive, Poseidon_ID_simple, .keep_all = T) %>%
   dplyr::group_by(archive, source) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
@@ -130,13 +76,13 @@ source_plot <- source_count %>%
   theme(
     legend.position = "bottom",
     axis.title = element_blank()
-  ) +
-  ggtitle("Samples per original data source")
+  ) #+
+  #ggtitle("Samples per original data source")
 
 # dating barplot
 
 dating_count <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
+  dplyr::distinct(archive, Poseidon_ID_simple, .keep_all = T) %>%
   dplyr::group_by(archive, Date_Type) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   tidyr::replace_na(list(Date_Type = "unknown")) %>%
@@ -160,13 +106,13 @@ dating_plot <- dating_count %>%
   theme(
     legend.position = "bottom",
     axis.title = element_blank()
-  ) +
-  ggtitle("Samples with age information")
+  )# +
+  #ggtitle("Samples with age information")
 
 # coords barplot
 
 coord_count <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
+  dplyr::distinct(archive, Poseidon_ID_simple, .keep_all = T) %>%
   dplyr::mutate(
     has_coordinates = dplyr::case_when(
       !is.na(Latitude) & !is.na(Longitude) ~ "available",
@@ -189,15 +135,57 @@ coord_plot <- coord_count %>%
   theme(
     legend.position = "bottom",
     axis.title = element_blank()
-  ) +
-  ggtitle("Samples with spatial coordinates")
+  )# +
+  #ggtitle("Samples with spatial coordinates")
 
-# combine barplots
+#### sankey sources ####
+
+sankey_sources_input <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::select(Poseidon_ID_simple, archive, source) %>%
+  dplyr::distinct(Poseidon_ID_simple, archive, .keep_all = T) %>%
+  dplyr::mutate(source = factor(source, levels = c(levels(source), "not in archive"))) %>%
+  tidyr::pivot_wider(id_cols = "Poseidon_ID_simple", names_from = "archive", values_from = "source") %>%
+  tidyr::replace_na(list(PCA = "not in archive", PAA = "not in archive")) %>%
+  ggsankey::make_long(PCA, PAA)
+
+source_colour_mapping <- wesanderson::wes_palette("IsleofDogs1")[1:6]
+names(source_colour_mapping) <- levels(pca$source)
+
+sources_sankey_plot <- sankey_sources_input %>%
+  ggplot(
+    aes(
+      x = x, 
+      next_x = next_x, 
+      node = node, 
+      next_node = next_node,
+      fill = factor(node, levels = levels(pca$source)),
+      label = node
+    )
+  ) +
+  ggsankey::geom_alluvial(
+    flow.alpha = .7,
+    width = 0.1,
+    #space = 200
+  ) +
+  labs(x = NULL) +
+  scale_fill_manual(values = source_colour_mapping, na.value = "lightblue") +
+  scale_x_discrete(expand = c(0.1, 0.1)) +
+  guides(fill = guide_legend(title = "Original data source")) +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = .5),
+    #axis.text.x = element_blank(),
+    #axis.ticks.x = element_blank()
+  ) +
+  coord_flip()
+
+# combine plots
 
 p <- cowplot::plot_grid(
-  publication_plot, source_plot, dating_plot, coord_plot,
-  nrow = 2, ncol = 2, align = "hv", axis = "tb",
-  labels = c("A", "B", "C", "D")
+  publication_plot, publication_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
+  nrow = 3, ncol = 2, align = "v", axis = "tb",
+  labels = c("A", "B", "C", "D", "E", "F")
 )
 
 ggsave(
@@ -206,7 +194,7 @@ ggsave(
   device = "pdf",
   scale = 0.7,
   dpi = 300,
-  width = 500, height = 170, units = "mm",
+  width = 500, height = 220, units = "mm",
   limitsize = F,
   bg = "white"
 )
@@ -371,7 +359,7 @@ map_plot <- ggplot() +
 # time histogram
 
 samples_with_mean_age <- dplyr::bind_rows(pca_ancient_with_coords, paa_ancient_with_coords) %>%
-  dplyr::select(Poseidon_ID, tidyselect::starts_with("Date_BC_AD"), package, archive, source) %>%
+  dplyr::select(Poseidon_ID_simple, tidyselect::starts_with("Date_BC_AD"), package, archive, source) %>%
   dplyr::mutate(
     Date_BC_AD_Median = dplyr::case_when(
       is.na(Date_BC_AD_Median) ~ (Date_BC_AD_Start + Date_BC_AD_Stop) / 2,
