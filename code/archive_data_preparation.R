@@ -1,5 +1,7 @@
 library(magrittr)
 
+#### prepare .janno file data ####
+
 pca_raw <- janno::read_janno("~/agora/community-archive", validate = F)
 pca_author_packages <- readr::read_lines("data_tracked/author_submitted_packages.txt")
 paa_raw <- janno::read_janno("~/agora/aadr-archive", validate = F)
@@ -16,6 +18,7 @@ cleanPoseidonIDs <- function(x) {
 }
 
 pca <- pca_raw %>%
+  tibble::as_tibble() %>%
   dplyr::mutate(
     archive = factor("PCA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
@@ -30,6 +33,7 @@ pca <- pca_raw %>%
   ) %>%
   cleanPoseidonIDs()
 paa <- paa_raw %>%
+  tibble::as_tibble() %>%
   dplyr::mutate(
     archive = factor("PAA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
@@ -45,9 +49,57 @@ source_order <- c(
 pca$source <- factor(pca$source, levels = source_order)
 paa$source <- factor(paa$source, levels = source_order)
 
-pcapaa <- dplyr::bind_rows(pca, paa)
-
 save(
   pca, paa,
   file = "data/janno_data.RData"
+)
+
+#### prepare .bib file data ####
+
+pca_bib_raw <- purrr::map_dfr(
+  list.files("~/agora/community-archive", pattern = "\\.bib$", full.names = T, recursive = T),
+  function(bib_path) {
+    bib_df <- bib2df::bib2df(bib_path)
+    bib_df %>% dplyr::mutate(
+      package = bib_path %>% dirname() %>% basename(),
+      archive = "PCA"
+    )
+  }
+)
+
+pca_bib <- pca_bib_raw %>%
+  dplyr::transmute(
+    bibtexkey = BIBTEXKEY,
+    doi = DOI,
+    year = YEAR,
+    archive = "PCA"
+  ) %>%
+  dplyr::group_by(bibtexkey) %>%
+  dplyr::arrange(doi) %>%
+  dplyr::slice_head(n = 1) %>%
+  dplyr::ungroup()
+
+paa_bib_raw <- purrr::map_dfr(
+  list.files("~/agora/aadr-archive", pattern = "\\.bib$", full.names = T, recursive = T),
+  function(bib_path) {
+    bib_df <- bib2df::bib2df(bib_path)
+    bib_df %>% dplyr::mutate(
+      package = bib_path %>% dirname() %>% basename(),
+      archive = "PAA"
+    )
+  }
+)
+
+paa_bib <- paa_bib_raw %>%
+  dplyr::transmute(
+    bibtexkey = BIBTEXKEY,
+    doi = DOI,
+    year = YEAR,
+    archive = "PAA"
+  ) %>%
+  dplyr::distinct(.keep_all = T)
+
+save(
+  pca_bib, paa_bib,
+  file = "data/bib_data.RData"
 )
