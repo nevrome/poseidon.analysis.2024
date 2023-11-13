@@ -58,7 +58,8 @@ package_publication_plot <- publication_count %>%
   theme(
     axis.title = element_blank(),
     legend.position = "bottom",
-    legend.margin = margin(t = -0.25, b = -0.25, unit='cm'),
+    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.justification = "right",
     legend.spacing.x = unit(0, 'cm')
   ) +
   ggtitle(
@@ -141,7 +142,8 @@ publication_barcode_plot <- samples_per_publication %>%
   theme(
     legend.position = "bottom",
     axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.25, unit='cm')
+    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.justification = "right"
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
   guides(fill = guide_legend(title = "Is the respective sample in the archive?")) +
@@ -169,9 +171,14 @@ source_plot <- source_count %>%
   theme_bw() +
   theme(
     legend.position = "bottom",
-    axis.title = element_blank()
-  ) #+
-  #ggtitle("Samples per original data source")
+    axis.title = element_blank(),
+    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.justification = "right"
+  ) +
+  ggtitle(
+    "Samples per original data source",
+    subtitle = "Number of samples by source and mechanism through which they were originally obtained"
+  )
 
 #### sankey sources ####
 
@@ -208,12 +215,15 @@ sources_sankey_plot <- sankey_sources_input %>%
   guides(fill = guide_legend(title = "Original data source")) +
   theme_bw() +
   theme(
-    legend.position = "none",
-    plot.title = element_text(hjust = .5),
+    legend.position = "none"
     #axis.text.x = element_blank(),
     #axis.ticks.x = element_blank()
   ) +
-  coord_flip()
+  coord_flip() +
+  ggtitle(
+    "Samples matching across archives",
+    subtitle = "Number of samples that match by Poseidon_ID across the archives by data source"
+  )
 
 # dating barplot
 
@@ -241,9 +251,14 @@ dating_plot <- dating_count %>%
   theme_bw() +
   theme(
     legend.position = "bottom",
-    axis.title = element_blank()
-  )# +
-  #ggtitle("Samples with age information")
+    axis.title = element_blank(),
+    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.justification = "right"
+  ) +
+  ggtitle(
+    "Samples with age information",
+    subtitle = "Number of samples with different types of archaeological age information"
+  )
 
 # coords barplot
 
@@ -270,9 +285,14 @@ coord_plot <- coord_count %>%
   theme_bw() +
   theme(
     legend.position = "bottom",
-    axis.title = element_blank()
-  )# +
-  #ggtitle("Samples with spatial coordinates")
+    axis.title = element_blank(),
+    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.justification = "right"
+  ) +
+  ggtitle(
+    "Samples with spatial coordinates",
+    subtitle = "Number of samples with latitude and longitude coordinates"
+  )
 
 # combine plots
 
@@ -283,7 +303,7 @@ p <- cowplot::plot_grid(
 )
 
 ggsave(
-  paste0("plots/figure_barplots4.pdf"),
+  paste0("plots/figure_barplots.pdf"),
   plot = p,
   device = "pdf",
   scale = 0.7,
