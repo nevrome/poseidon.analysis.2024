@@ -1,6 +1,11 @@
 library(magrittr)
 library(ggplot2)
 
+#### load janno data ####s
+
+load("data/janno_data.RData")
+pca_author_packages <- readr::read_lines("data_tracked/author_submitted_packages.txt")
+
 #### space-time figure ####
 
 # filter datasets to spatiotemporally informed subset
