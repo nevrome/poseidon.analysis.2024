@@ -173,6 +173,48 @@ source_plot <- source_count %>%
   ) #+
   #ggtitle("Samples per original data source")
 
+#### sankey sources ####
+
+sankey_sources_input <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::select(Poseidon_ID_simple, archive, source) %>%
+  dplyr::distinct(Poseidon_ID_simple, archive, .keep_all = T) %>%
+  dplyr::mutate(source = factor(source, levels = c(levels(source), "not in archive"))) %>%
+  tidyr::pivot_wider(id_cols = "Poseidon_ID_simple", names_from = "archive", values_from = "source") %>%
+  tidyr::replace_na(list(PCA = "not in archive", PAA = "not in archive")) %>%
+  ggsankey::make_long(PCA, PAA)
+
+source_colour_mapping <- wesanderson::wes_palette("IsleofDogs1")[1:6]
+names(source_colour_mapping) <- levels(pca$source)
+
+sources_sankey_plot <- sankey_sources_input %>%
+  ggplot(
+    aes(
+      x = x, 
+      next_x = next_x, 
+      node = node, 
+      next_node = next_node,
+      fill = factor(node, levels = levels(pca$source)),
+      label = node
+    )
+  ) +
+  ggsankey::geom_alluvial(
+    flow.alpha = .7,
+    width = 0.1,
+    #space = 200
+  ) +
+  labs(x = NULL) +
+  scale_fill_manual(values = source_colour_mapping, na.value = "lightblue") +
+  scale_x_discrete(expand = c(0.1, 0.1)) +
+  guides(fill = guide_legend(title = "Original data source")) +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = .5),
+    #axis.text.x = element_blank(),
+    #axis.ticks.x = element_blank()
+  ) +
+  coord_flip()
+
 # dating barplot
 
 dating_count <- dplyr::bind_rows(pca, paa) %>%
@@ -231,48 +273,6 @@ coord_plot <- coord_count %>%
     axis.title = element_blank()
   )# +
   #ggtitle("Samples with spatial coordinates")
-
-#### sankey sources ####
-
-sankey_sources_input <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::select(Poseidon_ID_simple, archive, source) %>%
-  dplyr::distinct(Poseidon_ID_simple, archive, .keep_all = T) %>%
-  dplyr::mutate(source = factor(source, levels = c(levels(source), "not in archive"))) %>%
-  tidyr::pivot_wider(id_cols = "Poseidon_ID_simple", names_from = "archive", values_from = "source") %>%
-  tidyr::replace_na(list(PCA = "not in archive", PAA = "not in archive")) %>%
-  ggsankey::make_long(PCA, PAA)
-
-source_colour_mapping <- wesanderson::wes_palette("IsleofDogs1")[1:6]
-names(source_colour_mapping) <- levels(pca$source)
-
-sources_sankey_plot <- sankey_sources_input %>%
-  ggplot(
-    aes(
-      x = x, 
-      next_x = next_x, 
-      node = node, 
-      next_node = next_node,
-      fill = factor(node, levels = levels(pca$source)),
-      label = node
-    )
-  ) +
-  ggsankey::geom_alluvial(
-    flow.alpha = .7,
-    width = 0.1,
-    #space = 200
-  ) +
-  labs(x = NULL) +
-  scale_fill_manual(values = source_colour_mapping, na.value = "lightblue") +
-  scale_x_discrete(expand = c(0.1, 0.1)) +
-  guides(fill = guide_legend(title = "Original data source")) +
-  theme_bw() +
-  theme(
-    legend.position = "none",
-    plot.title = element_text(hjust = .5),
-    #axis.text.x = element_blank(),
-    #axis.ticks.x = element_blank()
-  ) +
-  coord_flip()
 
 # combine plots
 
