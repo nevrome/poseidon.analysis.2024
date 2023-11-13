@@ -4,6 +4,8 @@ library(ggplot2)
 #### load janno data ####
 
 load("data/janno_data.RData")
+load("data/bib_data.RData")
+load("data/bibkey_lookup_hashmap.RData")
 
 #### barplots ####
 
@@ -26,7 +28,7 @@ unique_publication_count <- publication_per_package %>%
   dplyr::group_by(archive) %>%
   dplyr::summarise(unique_n = dplyr::n(), .groups = "drop")
 
-publication_plot <- publication_count %>%
+package_publication_plot <- publication_count %>%
   ggplot() +
   geom_bar(
     mapping = aes(
@@ -58,13 +60,13 @@ publication_plot <- publication_count %>%
 
 # publication comparison
 
-load("data/bib_data.RData")
 keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
   dplyr::select(archive, bibtexkey, year)
 
 samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
   dplyr::select(Poseidon_ID, archive, Publication) %>%
   tidyr::unnest(cols = "Publication") %>%
+  dplyr::mutate(Publication = lookup_paa_key(Publication)) %>%
   dplyr::filter(!grepl("AADR", Publication)) %>%
   dplyr::group_by(archive, Publication) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
@@ -100,7 +102,8 @@ year_separators <- samples_per_publication %>%
   dplyr::mutate(year = dplyr::lead(year, n = 1, default = 2023)) %>%
   dplyr::filter(year >= 2012)
 
-# samples_per_publication %>% dplyr::filter(availability == "no") %>% dplyr::arrange(dplyr::desc(n)) %>% View()
+# samples_per_publication %>% dplyr::filter(availability == "no") %>%
+# dplyr::arrange(dplyr::desc(n)) %>% View()
 
 publication_barcode_plot <- samples_per_publication %>%
   ggplot() +
@@ -130,24 +133,6 @@ publication_barcode_plot <- samples_per_publication %>%
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
   guides(fill = guide_legend(title = "Is the respecitve sample in the archive?"))
-
-p <- cowplot::plot_grid(
-  publication_plot, publication_barcode_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
-  nrow = 3, ncol = 2, align = "v", axis = "tb",
-  labels = c("A", "B", "C", "D", "E", "F")
-)
-
-ggsave(
-  paste0("plots/figure_barplots3.pdf"),
-  plot = p,
-  device = "pdf",
-  scale = 0.7,
-  dpi = 300,
-  width = 500, height = 220, units = "mm",
-  limitsize = F,
-  bg = "white"
-)
-
 
 # source barplot
 
@@ -276,13 +261,13 @@ sources_sankey_plot <- sankey_sources_input %>%
 # combine plots
 
 p <- cowplot::plot_grid(
-  publication_plot, publication_barcode_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
+  package_publication_plot, publication_barcode_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
   nrow = 3, ncol = 2, align = "v", axis = "tb",
   labels = c("A", "B", "C", "D", "E", "F")
 )
 
 ggsave(
-  paste0("plots/figure_barplots3.pdf"),
+  paste0("plots/figure_barplots4.pdf"),
   plot = p,
   device = "pdf",
   scale = 0.7,
