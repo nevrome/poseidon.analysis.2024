@@ -5,6 +5,7 @@ library(ggplot2)
 
 load("data/janno_data.RData")
 load("data/bib_data.RData")
+load("data/bibkey_lookup_hashmap.RData")
 
 pca_bib_linked_to_samples <- pca %>%
   dplyr::select(Publication) %>%
@@ -12,6 +13,9 @@ pca_bib_linked_to_samples <- pca %>%
   dplyr::distinct() %>%
   dplyr::left_join(
     pca_bib, by = c("Publication" = "bibtexkey")
+  ) %>%
+  dplyr::mutate(
+    Publication = lookup_paa_key(Publication)
   )
 
 paa_bib_linked_to_samples <- paa %>%
@@ -82,7 +86,7 @@ ggsave(
   device = "pdf",
   scale = 0.7,
   dpi = 300,
-  width = 500, height = 300, units = "mm",
+  width = 500, height = 280, units = "mm",
   limitsize = F,
   bg = "white"
 )
