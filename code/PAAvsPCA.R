@@ -13,6 +13,7 @@ load("data/bibkey_lookup_hashmap.RData")
 
 publication_per_package <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, package, main_publication) %>%
+  dplyr::mutate(main_publication = lookup_paa_key(main_publication)) %>%
   dplyr::summarise(.groups = "drop")
 
 publication_count <- publication_per_package %>%
@@ -44,19 +45,26 @@ package_publication_plot <- publication_count %>%
     mapping = aes(
       x = archive,
       y = unique_n
-    )
+    ),
+    shape = 18
   ) +
-  scale_fill_manual(values = c("A" = "lightgrey", "B" = "darkgrey")) +
+  scale_fill_manual(values = c("A" = "darkgrey", "B" = "lightgrey")) +
   guides(fill = guide_legend(
-    title = "Alternating colours for the packages"
+    title = "Alternating colours for packages:  ",
+    label = F
   )) +
   coord_flip() +
   theme_bw() +
   theme(
     axis.title = element_blank(),
-    legend.position = "bottom"
-  )# +
-  #ggtitle("Publications per Poseidon package")
+    legend.position = "bottom",
+    legend.margin = margin(t = -0.25, b = -0.25, unit='cm'),
+    legend.spacing.x = unit(0, 'cm')
+  ) +
+  ggtitle(
+    "Publications per Poseidon package",
+    subtitle = "Number of main sample-carrying publications represented in each package"
+  )
 
 # publication comparison
 
@@ -64,6 +72,7 @@ keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
   dplyr::select(archive, bibtexkey, year)
 
 samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
+  # dplyr::select(Poseidon_ID_simple, archive, Publication = main_publication) %>%
   dplyr::select(Poseidon_ID_simple, archive, Publication) %>%
   tidyr::unnest(cols = "Publication") %>%
   dplyr::filter(!grepl("AADR", Publication)) %>%
@@ -124,16 +133,22 @@ publication_barcode_plot <- samples_per_publication %>%
   geom_point(
     data = year_separators %>% dplyr::mutate(x = "PCA"),
     mapping = aes(x = x, y = n),
-    position = position_nudge(x = -0.5)
+    position = position_nudge(x = -0.5),
+    shape = 17, size = 0.7
   ) + 
   coord_flip() +
   theme_bw() +
   theme(
     legend.position = "bottom",
-    axis.title = element_blank()
+    axis.title = element_blank(),
+    legend.margin = margin(t = -0.25, b = -0.25, unit='cm')
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
-  guides(fill = guide_legend(title = "Is the respecitve sample in the archive?"))
+  guides(fill = guide_legend(title = "Is the respective sample in the archive?")) +
+  ggtitle(
+    "Samples per Publication",
+    subtitle = "Number of samples available in each archive for each referenced publication (by year)"
+  )
 
 # source barplot
 
