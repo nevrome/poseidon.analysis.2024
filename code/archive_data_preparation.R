@@ -103,3 +103,65 @@ save(
   pca_bib, paa_bib,
   file = "data/bib_data.RData"
 )
+
+#### prepare bib key lookup PCA -> PAA ####
+
+# The following code is commented out, because it was only used run once to prepare the
+# original template for "data_tracked/bibkey_mapping.csv", which was then manually
+# cleaned
+
+# pca_bib_linked_to_samples <- pca %>%
+#   dplyr::select(Publication) %>%
+#   tidyr::unnest(cols = c("Publication")) %>%
+#   dplyr::distinct() %>%
+#   dplyr::left_join(
+#     pca_bib, by = c("Publication" = "bibtexkey")
+#   )
+# 
+# paa_bib_linked_to_samples <- paa %>%
+#   dplyr::select(Publication) %>%
+#   tidyr::unnest(cols = c("Publication")) %>%
+#   dplyr::distinct() %>%
+#   dplyr::left_join(
+#     paa_bib, by = c("Publication" = "bibtexkey")
+#   )
+#
+# publication_overlap <- dplyr::full_join(
+#   pca_bib_linked_to_samples,
+#   paa_bib_linked_to_samples,
+#   by = c("Publication", "year"),
+#   suffix = c("_PCA", "_PAA"),
+#   keep = TRUE
+# )
+# 
+# publication_overlap %>%
+#   dplyr::select(Publication_PAA, doi_PAA, Publication_PCA, doi_PCA) %>%
+#   readr::write_csv("data_tracked/bibkey_mapping.csv")
+
+bibkey_lookup_table <- readr::read_csv("data_tracked/bibkey_mapping.csv") %>%
+  dplyr::filter(!is.na(Publication_PCA))
+
+bibkey_lookup_hashmap <- hash::hash(
+  bibkey_lookup_table$Publication_PCA,
+  bibkey_lookup_table$Publication_PAA
+)
+
+lookup_paa_key <- function(pca_keys) {
+  purrr::map_chr(pca_keys, function(pca_key) {
+    if (!hash::has.key(pca_key, bibkey_lookup_hashmap)) {
+      pca_key
+    } else {
+      paa_key <- hash::values(bibkey_lookup_hashmap, pca_key)
+      if (!is.na(paa_key)) {
+        paa_key
+      } else {
+        pca_key
+      }
+    }
+  })
+}
+
+save(
+  bibkey_lookup_hashmap, lookup_paa_key,
+  file = "data/bibkey_lookup_hashmap.RData"
+)
