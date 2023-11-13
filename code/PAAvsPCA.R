@@ -60,11 +60,12 @@ package_publication_plot <- publication_count %>%
     legend.position = "bottom",
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
     legend.justification = "right",
-    legend.spacing.x = unit(0, 'cm')
+    legend.spacing.x = unit(0, 'cm'),
+    plot.title = element_text(size = 11, face = "bold")
   ) +
   ggtitle(
-    "Publications per Poseidon package",
-    subtitle = "Number of main sample-carrying publications represented in each package"
+    #"Publications per Poseidon package",
+    "Number of main sample-carrying publications represented in each package"
   )
 
 # publication comparison
@@ -143,13 +144,14 @@ publication_barcode_plot <- samples_per_publication %>%
     legend.position = "bottom",
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
-    legend.justification = "right"
+    legend.justification = "right",
+    plot.title = element_text(size = 11, face = "bold")
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
   guides(fill = guide_legend(title = "Is the respective sample in the archive?")) +
   ggtitle(
-    "Samples per Publication",
-    subtitle = "Number of samples available in each archive for each referenced publication (by year)"
+    #"Samples per Publication",
+    "Number of samples available in each archive for each referenced publication (by year)"
   )
 
 # source barplot
@@ -173,11 +175,12 @@ source_plot <- source_count %>%
     legend.position = "bottom",
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
-    legend.justification = "right"
+    legend.justification = "right",
+    plot.title = element_text(size = 11, face = "bold")
   ) +
   ggtitle(
-    "Samples per original data source",
-    subtitle = "Number of samples by source and mechanism through which they were originally obtained"
+    # "Samples per original data source",
+    "Number of samples by source & mechanism of primary origin"
   )
 
 #### sankey sources ####
@@ -215,14 +218,13 @@ sources_sankey_plot <- sankey_sources_input %>%
   guides(fill = guide_legend(title = "Original data source")) +
   theme_bw() +
   theme(
-    legend.position = "none"
-    #axis.text.x = element_blank(),
-    #axis.ticks.x = element_blank()
+    legend.position = "none",
+    plot.title = element_text(size = 11, face = "bold")
   ) +
   coord_flip() +
   ggtitle(
-    "Samples matching across archives",
-    subtitle = "Number of samples that match by Poseidon_ID across the archives by data source"
+    # "Samples matching across archives",
+    "Number of samples that match by Poseidon_ID across the archives by data source"
   )
 
 # dating barplot
@@ -253,11 +255,12 @@ dating_plot <- dating_count %>%
     legend.position = "bottom",
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
-    legend.justification = "right"
+    legend.justification = "right",
+    plot.title = element_text(size = 11, face = "bold")
   ) +
   ggtitle(
-    "Samples with age information",
-    subtitle = "Number of samples with different types of archaeological age information"
+    # "Samples with age information",
+    "Number of samples with different types of archaeological age information"
   )
 
 # coords barplot
@@ -287,11 +290,12 @@ coord_plot <- coord_count %>%
     legend.position = "bottom",
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
-    legend.justification = "right"
+    legend.justification = "right",
+    plot.title = element_text(size = 11, face = "bold")
   ) +
   ggtitle(
-    "Samples with spatial coordinates",
-    subtitle = "Number of samples with latitude and longitude coordinates"
+    #"Samples with spatial coordinates",
+    "Number of samples with latitude and longitude coordinates"
   )
 
 # combine plots
