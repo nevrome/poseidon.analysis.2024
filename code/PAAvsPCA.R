@@ -64,10 +64,11 @@ keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
   dplyr::select(archive, bibtexkey, year)
 
 samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::select(Poseidon_ID, archive, Publication) %>%
+  dplyr::select(Poseidon_ID_simple, archive, Publication) %>%
   tidyr::unnest(cols = "Publication") %>%
-  dplyr::mutate(Publication = lookup_paa_key(Publication)) %>%
   dplyr::filter(!grepl("AADR", Publication)) %>%
+  dplyr::distinct() %>%
+  dplyr::mutate(Publication = lookup_paa_key(Publication)) %>%
   dplyr::group_by(archive, Publication) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   tidyr::complete(archive, Publication, fill = list(n = 0)) %>%
