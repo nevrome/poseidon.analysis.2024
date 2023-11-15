@@ -68,6 +68,17 @@ package_publication_plot <- publication_count %>%
     "Number of main sample-carrying publications represented in each package"
   )
 
+ggsave(
+  paste0("plots/figure_barplots_A.pdf"),
+  plot = package_publication_plot,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
+
 # publication comparison
 
 keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
