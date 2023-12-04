@@ -209,8 +209,19 @@ source_plot <- source_count %>%
   ) +
   ggtitle(
     # "Samples per original data source",
-    "Number of samples by source & mechanism of primary origin"
+    "Number of samples by source & primary mechanism of origin"
   )
+
+ggsave(
+  paste0("plots/figure_barplots_C.pdf"),
+  plot = source_plot,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
 
 #### sankey sources ####
 
@@ -256,6 +267,17 @@ sources_sankey_plot <- sankey_sources_input %>%
     "Number of samples that match by Poseidon_ID across the archives by data source"
   )
 
+ggsave(
+  paste0("plots/figure_barplots_D.pdf"),
+  plot = sources_sankey_plot,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
+
 # dating barplot
 
 dating_count <- dplyr::bind_rows(pca, paa) %>%
@@ -292,6 +314,17 @@ dating_plot <- dating_count %>%
     "Number of samples with different types of archaeological age information"
   )
 
+ggsave(
+  paste0("plots/figure_barplots_E.pdf"),
+  plot = dating_plot,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
+
 # coords barplot
 
 coord_count <- dplyr::bind_rows(pca, paa) %>%
@@ -326,6 +359,17 @@ coord_plot <- coord_count %>%
     #"Samples with spatial coordinates",
     "Number of samples with latitude and longitude coordinates"
   )
+
+ggsave(
+  paste0("plots/figure_barplots_F.pdf"),
+  plot = coord_plot,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
 
 # combine plots
 
