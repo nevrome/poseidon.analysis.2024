@@ -6,14 +6,52 @@ pca_raw <- janno::read_janno("~/agora/community-archive", validate = F)
 pca_author_packages <- readr::read_lines("data_tracked/author_submitted_packages.txt")
 paa_raw <- janno::read_janno("~/agora/aadr-archive", validate = F)
 
+cleaningPatterns <- c(
+  "\\.HO",
+  "\\.DG",
+  "\\.SG",
+  "\\.SDG",
+  "\\_WGA",
+  "\\_noUDG",
+  "\\_udg",
+  "\\.WGC",
+  "\\_d",
+  "\\_old",
+  "\\_new",
+  "\\_alt",
+  "\\.EC",
+  "\\_genotyping",
+  "\\_enhanced",
+  "\\_snpAD",
+  "\\_merged",
+  "\\.merged",
+  "\\_merge",
+  "\\_lib",
+  "\\_renamed",
+  "\\_in.preparation",
+  "\\_contam",
+  "\\.cont",
+  "\\.A",
+  "\\_v54.1_addback",
+  "\\_petrous",
+  "\\_published",
+  "\\_all",
+  "\\_provisional",
+  "\\_final",
+  "-ALL_DATA",
+  "\\.minus",
+  "\\.bam",
+  "\\.sorted",
+  "\\.fixedHeader",
+  "\\.bam"
+) %>% paste0(collapse = "|")
+
 cleanPoseidonIDs <- function(x) {
   x %>%
     dplyr::mutate(
-      Poseidon_ID_simple = 
-        Poseidon_ID %>%
-        stringr::str_replace(., "\\.HO$", "") %>%
-        stringr::str_replace(., "\\.DG$", "") %>%
-        stringr::str_replace(., "\\.SG$", "")
+      Poseidon_ID_simple = stringr::str_remove_all(
+        Poseidon_ID, cleaningPatterns
+      )
     )
 }
 

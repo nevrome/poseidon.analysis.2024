@@ -226,10 +226,15 @@ ggsave(
 #### sankey sources ####
 
 sankey_sources_input <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::select(Poseidon_ID_simple, archive, source) %>%
-  dplyr::distinct(Poseidon_ID_simple, archive, .keep_all = T) %>%
+  dplyr::select(Poseidon_ID, Poseidon_ID_simple, archive, source) %>%
   dplyr::mutate(source = factor(source, levels = c(levels(source), "not in archive"))) %>%
-  tidyr::pivot_wider(id_cols = "Poseidon_ID_simple", names_from = "archive", values_from = "source") %>%
+  dplyr::group_by(Poseidon_ID_simple, archive) %>%
+  dplyr::arrange(source) %>%
+  dplyr::slice_head(n = 1) %>%
+  dplyr::ungroup() %>%
+  tidyr::pivot_wider(
+    id_cols = "Poseidon_ID_simple", names_from = "archive", values_from = "source"
+  ) %>%
   tidyr::replace_na(list(PCA = "not in archive", PAA = "not in archive")) %>%
   ggsankey::make_long(PCA, PAA)
 
