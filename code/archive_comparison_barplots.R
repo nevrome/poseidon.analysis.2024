@@ -82,7 +82,14 @@ ggsave(
 # publication comparison
 
 keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
-  dplyr::select(archive, bibtexkey, year)
+  dplyr::select(archive, bibtexkey, year) %>%
+  dplyr::distinct() %>%
+  # select paa key if available, otherwise the pca key
+  dplyr::group_by(bibtexkey) %>%
+  dplyr::arrange(archive) %>%
+  dplyr::slice_head() %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-archive)
 
 samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
   # dplyr::select(Poseidon_ID_simple, archive, Publication = main_publication) %>%
@@ -94,7 +101,7 @@ samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, Publication) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   tidyr::complete(archive, Publication, fill = list(n = 0)) %>%
-  dplyr::left_join(keys_with_years, by = c("archive", "Publication" = "bibtexkey")) %>%
+  dplyr::left_join(keys_with_years, by = c("Publication" = "bibtexkey")) %>%
   dplyr::group_split(Publication) %>%
   purrr::map_dfr(
     function(x) {
@@ -122,7 +129,7 @@ year_separators <- samples_per_publication %>%
   dplyr::summarise(n = sum(n)) %>%
   dplyr::arrange(year) %>%
   dplyr::mutate(n = cumsum(n)) %>%
-  dplyr::mutate(year = dplyr::lead(year, n = 1, default = 2023)) %>%
+  dplyr::mutate(year = dplyr::lead(year, n = 1, default = NA)) %>%
   dplyr::filter(year >= 2012)
 
 # samples_per_publication %>% dplyr::filter(availability == "no") %>%
@@ -164,6 +171,17 @@ publication_barcode_plot <- samples_per_publication %>%
     #"Samples per Publication",
     "Number of samples available in each archive for each referenced publication (by year)"
   )
+
+ggsave(
+  paste0("plots/figure_barplots_B.pdf"),
+  plot = publication_barcode_plot,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
 
 # source barplot
 
