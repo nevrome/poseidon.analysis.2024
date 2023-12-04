@@ -81,6 +81,30 @@ paa <- paa_raw %>%
   ) %>%
   cleanPoseidonIDs()
 
+# unify Poseidon_ID_simple
+# dplyr::full_join(
+#   pca, paa,
+#   by = "Poseidon_ID_simple", relationship = "many-to-many",
+#   suffix = c(".pca", ".paa")
+#   ) %>%
+#   dplyr::select(Poseidon_ID_simple, Poseidon_ID.pca, Poseidon_ID.paa) %>%
+#   dplyr::filter(is.na(Poseidon_ID.pca) | is.na(Poseidon_ID.paa))
+
+dplyr::bind_rows(pca, paa) %>%
+  dplyr::select(Poseidon_ID_simple, archive) %>%
+  dplyr::distinct() %>%
+  dplyr::group_by(Poseidon_ID_simple) %>%
+  dplyr::mutate(n = dplyr::n()) %>%
+  dplyr::filter(n == 1) %>% View()
+
+# 0101
+# .B
+# + -> _
+# _oEEF
+# Sanganji_131464, Sanganji131464, Sanganji131421-3
+# some merged individuals
+
+# set levels of source factor
 source_order <- c(
   "AADR v42.4", "AADR v44.3", "AADR v50", "AADR v54.1.p1",
   "Extracted from paper", "Submitted by author"
