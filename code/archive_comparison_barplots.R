@@ -318,27 +318,60 @@ ggsave(
 
 # dating barplot
 
-dating_count <- dplyr::bind_rows(pca, paa) %>%
+dating_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
+  dplyr::group_by(archive, Date_Type) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+dating_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::group_by(archive, Date_Type) %>%
-  dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop") 
+
+dating_count <- dplyr::full_join(
+  dating_count_poseidon_id, dating_count_approx_ind_id,
+  by = c("archive", "Date_Type"), suffix = c("_poseidon_id", "_approx_ind_id")
+) %>%
   tidyr::replace_na(list(Date_Type = "unknown")) %>%
   dplyr::mutate(
     Date_Type = factor(
       Date_Type,
       levels = c("modern", "C14", "contextual", "unknown") %>% rev()
     )
+  ) %>%
+  dplyr::transmute(
+    archive, Date_Type,
+    n_approx_ind_id,
+    n_diff = n_poseidon_id - n_approx_ind_id
+  ) %>%
+  tidyr::pivot_longer(
+    cols = tidyselect::starts_with("n_"),
+    names_to = "count_type",
+    values_to = "n"
+  ) %>%
+  dplyr::mutate(
+    count_type = factor(count_type, levels = c("n_diff", "n_approx_ind_id"))
   )
 
 dating_plot <- dating_count %>%
   ggplot() +
-  geom_bar(
-    mapping = aes(x = archive, y = n, fill = Date_Type),
-    stat = "identity"
+  ggpattern::geom_col_pattern(
+    mapping = aes(x = archive, y = n, fill = Date_Type, pattern = count_type),
+    pattern_color = "white"
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs2")) +
-  guides(fill = guide_legend(title = "Age information", reverse = TRUE)) +
+  ggpattern::scale_pattern_manual(
+    values = c("n_approx_ind_id" = "none", "n_diff" = "stripe"),
+    guide = "none"
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Age information",
+      reverse = TRUE,
+      override.aes = list(pattern = "none")
+    )
+  ) +
   theme_bw() +
   theme(
     legend.position = "bottom",
