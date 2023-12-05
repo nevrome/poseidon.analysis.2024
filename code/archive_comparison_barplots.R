@@ -360,7 +360,7 @@ dating_plot <- dating_count %>%
     pattern_color = "white", pattern_fill = "white"
   ) +
   coord_flip() +
-  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs2")) +
+  scale_fill_manual(values = c("darkgrey", wesanderson::wes_palette("IsleofDogs2")[1:3])) +
   ggpattern::scale_pattern_manual(
     values = c("n_approx_ind_id" = "none", "n_diff" = "stripe"),
     guide = "none"
@@ -445,7 +445,8 @@ coord_plot <- coord_count %>%
     pattern_color = "white", pattern_fill = "white"
   ) +
   coord_flip() +
-  scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1")) +
+  #scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1")) +
+  scale_fill_manual(values = c("lightgrey", "darkgrey")) +
   ggpattern::scale_pattern_manual(
     values = c("n_approx_ind_id" = "none", "n_diff" = "stripe"),
     guide = "none"
