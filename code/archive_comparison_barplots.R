@@ -61,7 +61,7 @@ package_publication_plot <- publication_count %>%
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
     legend.justification = "right",
     legend.spacing.x = unit(0, 'cm'),
-    plot.title = element_text(size = 11, face = "bold")
+    plot.title = element_text(size = 11)
   ) +
   ggtitle(
     #"Publications per Poseidon package",
@@ -163,7 +163,7 @@ publication_barcode_plot <- samples_per_publication %>%
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
     legend.justification = "right",
-    plot.title = element_text(size = 11, face = "bold")
+    plot.title = element_text(size = 11)
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
   guides(fill = guide_legend(title = "Is the respective sample in the archive?")) +
@@ -238,7 +238,7 @@ source_plot <- source_count %>%
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
     legend.justification = "right",
-    plot.title = element_text(size = 11, face = "bold")
+    plot.title = element_text(size = 11)
   ) +
   ggtitle(
     # "Samples per original data source",
@@ -297,12 +297,12 @@ sources_sankey_plot <- sankey_sources_input %>%
   theme_bw() +
   theme(
     legend.position = "none",
-    plot.title = element_text(size = 11, face = "bold")
+    plot.title = element_text(size = 11)
   ) +
   coord_flip() +
   ggtitle(
     # "Samples matching across archives",
-    "Number of samples that match by Poseidon_ID across the archives by data source"
+    "Approx. number of individuals that match across the archives (by data source)"
   )
 
 ggsave(
@@ -378,7 +378,7 @@ dating_plot <- dating_count %>%
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
     legend.justification = "right",
-    plot.title = element_text(size = 11, face = "bold")
+    plot.title = element_text(size = 11)
   ) +
   ggtitle(
     # "Samples with age information",
@@ -463,7 +463,7 @@ coord_plot <- coord_count %>%
     axis.title = element_blank(),
     legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
     legend.justification = "right",
-    plot.title = element_text(size = 11, face = "bold")
+    plot.title = element_text(size = 11)
   ) +
   ggtitle(
     #"Samples with spatial coordinates",
