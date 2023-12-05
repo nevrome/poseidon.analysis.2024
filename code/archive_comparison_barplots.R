@@ -185,19 +185,43 @@ ggsave(
 
 # source barplot
 
-source_count <- dplyr::bind_rows(pca, paa) %>%
+source_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
+  dplyr::group_by(archive, source) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+source_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::group_by(archive, source) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
+source_count <- dplyr::full_join(
+  source_count_poseidon_id, source_count_approx_ind_id,
+  by = c("archive", "source"), suffix = c("_poseidon_id", "_approx_ind_id")
+) %>%
+  dplyr::transmute(
+    archive, source,
+    n_approx_ind_id,
+    n_diff = n_poseidon_id - n_approx_ind_id
+  ) %>%
+  tidyr::pivot_longer(
+    cols = tidyselect::starts_with("n_"),
+    names_to = "count_type",
+    values_to = "n"
+  ) %>%
+  dplyr::mutate(
+    count_type = factor(count_type, levels = c("n_diff", "n_approx_ind_id"))
+  )
+
 source_plot <- source_count %>%
   ggplot() +
   geom_bar(
-    mapping = aes(x = archive, y = n, fill = source),
+    mapping = aes(x = archive, y = n, fill = source, alpha = count_type),
     stat = "identity"
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
+  scale_alpha_manual(values = c("n_approx_ind_id" = 1, "n_diff" = 0.6), guide = "none") +
   guides(fill = guide_legend(title = "Original data source", reverse = TRUE)) +
   theme_bw() +
   theme(
@@ -213,7 +237,7 @@ source_plot <- source_count %>%
   )
 
 ggsave(
-  paste0("plots/figure_barplots_C.pdf"),
+  paste0("plots/figure_barplots_C2.pdf"),
   plot = source_plot,
   device = "pdf",
   scale = 0.7,
