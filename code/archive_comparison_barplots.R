@@ -217,7 +217,7 @@ source_plot <- source_count %>%
   ggplot() +
   ggpattern::geom_col_pattern(
     mapping = aes(x = archive, y = n, fill = source, pattern = count_type),
-    pattern_color = "white"
+    pattern_color = "white", pattern_fill = "white"
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
@@ -326,7 +326,7 @@ dating_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
 dating_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::group_by(archive, Date_Type) %>%
-  dplyr::summarise(n = dplyr::n(), .groups = "drop") 
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
 dating_count <- dplyr::full_join(
   dating_count_poseidon_id, dating_count_approx_ind_id,
@@ -357,7 +357,7 @@ dating_plot <- dating_count %>%
   ggplot() +
   ggpattern::geom_col_pattern(
     mapping = aes(x = archive, y = n, fill = Date_Type, pattern = count_type),
-    pattern_color = "white"
+    pattern_color = "white", pattern_fill = "white"
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs2")) +
@@ -398,7 +398,18 @@ ggsave(
 
 # coords barplot
 
-coord_count <- dplyr::bind_rows(pca, paa) %>%
+coord_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
+  dplyr::mutate(
+    has_coordinates = dplyr::case_when(
+      !is.na(Latitude) & !is.na(Longitude) ~ "available",
+      TRUE ~ "missing"
+    )
+  ) %>%
+  dplyr::group_by(archive, has_coordinates) %>%
+  dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+coord_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::mutate(
     has_coordinates = dplyr::case_when(
@@ -409,15 +420,43 @@ coord_count <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, has_coordinates) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
+coord_count <- dplyr::full_join(
+  coord_count_poseidon_id, coord_count_approx_ind_id,
+  by = c("archive", "has_coordinates"), suffix = c("_poseidon_id", "_approx_ind_id")
+) %>%
+  dplyr::transmute(
+    archive, has_coordinates,
+    n_approx_ind_id,
+    n_diff = n_poseidon_id - n_approx_ind_id
+  ) %>%
+  tidyr::pivot_longer(
+    cols = tidyselect::starts_with("n_"),
+    names_to = "count_type",
+    values_to = "n"
+  ) %>%
+  dplyr::mutate(
+    count_type = factor(count_type, levels = c("n_diff", "n_approx_ind_id"))
+  )
+
 coord_plot <- coord_count %>%
   ggplot() +
-  geom_bar(
-    mapping = aes(x = archive, y = n, fill = has_coordinates),
-    stat = "identity"
+  ggpattern::geom_col_pattern(
+    mapping = aes(x = archive, y = n, fill = has_coordinates, pattern = count_type),
+    pattern_color = "white", pattern_fill = "white"
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1")) +
-  guides(fill = guide_legend(title = "Coordinate information", reverse = TRUE)) +
+  ggpattern::scale_pattern_manual(
+    values = c("n_approx_ind_id" = "none", "n_diff" = "stripe"),
+    guide = "none"
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Coordinate information",
+      reverse = TRUE,
+      override.aes = list(pattern = "none")
+    )
+  ) +
   theme_bw() +
   theme(
     legend.position = "bottom",
