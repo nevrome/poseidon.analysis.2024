@@ -215,14 +215,23 @@ source_count <- dplyr::full_join(
 
 source_plot <- source_count %>%
   ggplot() +
-  geom_bar(
-    mapping = aes(x = archive, y = n, fill = source, alpha = count_type),
-    stat = "identity"
+  ggpattern::geom_col_pattern(
+    mapping = aes(x = archive, y = n, fill = source, pattern = count_type),
+    pattern_color = "white"
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
-  scale_alpha_manual(values = c("n_approx_ind_id" = 1, "n_diff" = 0.6), guide = "none") +
-  guides(fill = guide_legend(title = "Original data source", reverse = TRUE)) +
+  ggpattern::scale_pattern_manual(
+    values = c("n_approx_ind_id" = "none", "n_diff" = "stripe"),
+    guide = "none"
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Original data source",
+      reverse = TRUE,
+      override.aes = list(pattern = "none")
+    )
+  ) +
   theme_bw() +
   theme(
     legend.position = "bottom",
@@ -237,7 +246,7 @@ source_plot <- source_count %>%
   )
 
 ggsave(
-  paste0("plots/figure_barplots_C2.pdf"),
+  paste0("plots/figure_barplots_C.pdf"),
   plot = source_plot,
   device = "pdf",
   scale = 0.7,
