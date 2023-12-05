@@ -92,8 +92,8 @@ keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
   dplyr::select(-archive)
 
 samples_per_publication <- dplyr::bind_rows(pca, paa) %>%
-  # dplyr::select(Poseidon_ID_simple, archive, Publication = main_publication) %>%
-  dplyr::select(Poseidon_ID_simple, archive, Publication) %>%
+  # dplyr::select(Approx_Individual_ID, archive, Publication = main_publication) %>%
+  dplyr::select(Approx_Individual_ID, archive, Publication) %>%
   tidyr::unnest(cols = "Publication") %>%
   dplyr::filter(!grepl("AADR", Publication)) %>%
   dplyr::distinct() %>%
@@ -186,7 +186,7 @@ ggsave(
 # source barplot
 
 source_count <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Poseidon_ID_simple, .keep_all = T) %>%
+  dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::group_by(archive, source) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
@@ -226,14 +226,14 @@ ggsave(
 #### sankey sources ####
 
 sankey_sources_input <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::select(Poseidon_ID, Poseidon_ID_simple, archive, source) %>%
+  dplyr::select(Poseidon_ID, Approx_Individual_ID, archive, source) %>%
   dplyr::mutate(source = factor(source, levels = c(levels(source), "not in archive"))) %>%
-  dplyr::group_by(Poseidon_ID_simple, archive) %>%
+  dplyr::group_by(Approx_Individual_ID, archive) %>%
   dplyr::arrange(source) %>%
   dplyr::slice_head(n = 1) %>%
   dplyr::ungroup() %>%
   tidyr::pivot_wider(
-    id_cols = "Poseidon_ID_simple", names_from = "archive", values_from = "source"
+    id_cols = "Approx_Individual_ID", names_from = "archive", values_from = "source"
   ) %>%
   tidyr::replace_na(list(PCA = "not in archive", PAA = "not in archive")) %>%
   ggsankey::make_long(PCA, PAA)
@@ -286,7 +286,7 @@ ggsave(
 # dating barplot
 
 dating_count <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Poseidon_ID_simple, .keep_all = T) %>%
+  dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::group_by(archive, Date_Type) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   tidyr::replace_na(list(Date_Type = "unknown")) %>%
@@ -333,7 +333,7 @@ ggsave(
 # coords barplot
 
 coord_count <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Poseidon_ID_simple, .keep_all = T) %>%
+  dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::mutate(
     has_coordinates = dplyr::case_when(
       !is.na(Latitude) & !is.na(Longitude) ~ "available",

@@ -31,7 +31,10 @@ cleaningPatterns <- c(
   "\\_in.preparation",
   "\\_contam",
   "\\.cont",
+  "\\.A0101",
   "\\.A",
+  "\\.B0101",
+  "\\.B",
   "\\_v54.1_addback",
   "\\_petrous",
   "\\_published",
@@ -43,15 +46,16 @@ cleaningPatterns <- c(
   "\\.bam",
   "\\.sorted",
   "\\.fixedHeader",
-  "\\.bam"
+  "\\_oEEF"
 ) %>% paste0(collapse = "|")
 
 cleanPoseidonIDs <- function(x) {
   x %>%
     dplyr::mutate(
-      Poseidon_ID_simple = stringr::str_remove_all(
+      Approx_Individual_ID = stringr::str_remove_all(
         Poseidon_ID, cleaningPatterns
-      )
+      ) %>%
+        stringr::str_replace_all(., "\\+", "\\_")
     )
 }
 
@@ -81,28 +85,17 @@ paa <- paa_raw %>%
   ) %>%
   cleanPoseidonIDs()
 
-# unify Poseidon_ID_simple
-# dplyr::full_join(
-#   pca, paa,
-#   by = "Poseidon_ID_simple", relationship = "many-to-many",
-#   suffix = c(".pca", ".paa")
-#   ) %>%
-#   dplyr::select(Poseidon_ID_simple, Poseidon_ID.pca, Poseidon_ID.paa) %>%
-#   dplyr::filter(is.na(Poseidon_ID.pca) | is.na(Poseidon_ID.paa))
-
-dplyr::bind_rows(pca, paa) %>%
-  dplyr::select(Poseidon_ID_simple, archive) %>%
-  dplyr::distinct() %>%
-  dplyr::group_by(Poseidon_ID_simple) %>%
-  dplyr::mutate(n = dplyr::n()) %>%
-  dplyr::filter(n == 1) %>% View()
-
-# 0101
-# .B
-# + -> _
-# _oEEF
-# Sanganji_131464, Sanganji131464, Sanganji131421-3
-# some merged individuals
+# check for avoidable mismatches in Approx_Individual_ID
+# dplyr::bind_rows(pca, paa) %>%
+#   dplyr::select(Approx_Individual_ID, archive) %>%
+#   dplyr::distinct() %>%
+#   dplyr::group_by(Approx_Individual_ID) %>%
+#   dplyr::mutate(n = dplyr::n()) %>%
+#   dplyr::filter(n == 1) %>%
+#   dplyr::ungroup() %>%
+#   dplyr::arrange(Approx_Individual_ID) %>%
+#   dplyr::filter(dplyr::lag(as.character(archive), n = 1, default = "") != as.character(archive)) %>%
+#   View()
 
 # set levels of source factor
 source_order <- c(

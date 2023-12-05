@@ -166,7 +166,7 @@ map_plot <- ggplot() +
 # time histogram
 
 samples_with_mean_age <- dplyr::bind_rows(pca_ancient_with_coords, paa_ancient_with_coords) %>%
-  dplyr::select(Poseidon_ID_simple, tidyselect::starts_with("Date_BC_AD"), package, archive, source) %>%
+  dplyr::select(Approx_Individual_ID, tidyselect::starts_with("Date_BC_AD"), package, archive, source) %>%
   dplyr::mutate(
     Date_BC_AD_Median = dplyr::case_when(
       is.na(Date_BC_AD_Median) ~ (Date_BC_AD_Start + Date_BC_AD_Stop) / 2,
