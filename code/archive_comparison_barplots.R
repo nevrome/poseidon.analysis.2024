@@ -169,7 +169,7 @@ publication_barcode_plot <- samples_per_publication %>%
   guides(fill = guide_legend(title = "Is the respective sample in the archive?")) +
   ggtitle(
     #"Samples per Publication",
-    "Number of samples available in each archive for each referenced publication (by year)"
+    "Number of individuals available in each archive for each referenced publication (by year)"
   )
 
 ggsave(
@@ -242,7 +242,7 @@ source_plot <- source_count %>%
   ) +
   ggtitle(
     # "Samples per original data source",
-    "Number of samples by source & primary mechanism of origin"
+    "Number of individuals/samples by source & primary mechanism of origin"
   )
 
 ggsave(
@@ -302,7 +302,7 @@ sources_sankey_plot <- sankey_sources_input %>%
   coord_flip() +
   ggtitle(
     # "Samples matching across archives",
-    "Approx. number of individuals that match across the archives (by data source)"
+    "Number of individuals that match across the archives (by data source)"
   )
 
 ggsave(
@@ -382,7 +382,7 @@ dating_plot <- dating_count %>%
   ) +
   ggtitle(
     # "Samples with age information",
-    "Number of samples with different types of archaeological age information"
+    "Number of individuals/samples with different types of archaeological age information"
   )
 
 ggsave(
@@ -468,7 +468,7 @@ coord_plot <- coord_count %>%
   ) +
   ggtitle(
     #"Samples with spatial coordinates",
-    "Number of samples with latitude and longitude coordinates"
+    "Number of individuals/samples with latitude and longitude coordinates"
   )
 
 ggsave(
