@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg516"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="paper_package_schema.svg"
+   inkscape:export-filename="../bc972d57/popgen_toolbox_package_schema.png"
+   inkscape:export-xdpi="600"
+   inkscape:export-ydpi="600"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview518"
+     pagecolor="#ffffff"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#464646"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.5536476"
+     inkscape:cx="407.10648"
+     inkscape:cy="370.0968"
+     inkscape:window-width="1680"
+     inkscape:window-height="1019"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:pageshadow="0" />
+  <defs
+     id="defs513">
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="338.89316"
+       height="24.575319"
+       id="rect1093" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect8434" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect8450" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect8458" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect8466" />
+    <marker
+       style="overflow:visible"
+       id="Square"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Square"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"
+       markerUnits="userSpaceOnUse">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M -5,-5 V 5 H 5 V -5 Z"
+         id="Squere" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker11122"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"
+       markerUnits="userSpaceOnUse">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="path11120"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker6543"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Square"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"
+       markerUnits="userSpaceOnUse">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M -5,-5 V 5 H 5 V -5 Z"
+         id="path6541" />
+    </marker>
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect12535" />
+    <marker
+       style="overflow:visible"
+       id="marker6255"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Square"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"
+       markerUnits="userSpaceOnUse">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M -5,-5 V 5 H 5 V -5 Z"
+         id="path6253" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker5820"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Square"
+       markerWidth="2"
+       markerHeight="2"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"
+       markerUnits="userSpaceOnUse">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M -5,-5 V 5 H 5 V -5 Z"
+         id="path5818" />
+    </marker>
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect1913" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="114.53818"
+       height="16.482262"
+       id="rect2010" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect2054" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="503.22812"
+       height="28.669018"
+       id="rect2094" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="73.824265"
+       height="133.96901"
+       id="rect4548" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="130.6765"
+       height="117.6236"
+       id="rect5454" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="256.31253"
+       height="35.357952"
+       id="rect6884" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="434.67093"
+       height="51.91468"
+       id="rect7962" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="133.64043"
+       height="213.9296"
+       id="rect8967" />
+    <rect
+       x="45.018448"
+       y="69.021225"
+       width="133.64043"
+       height="213.9296"
+       id="rect16315" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:0.264583, 0.264583"
+       id="rect2074-5-3"
+       width="1.3913319"
+       height="1.3913319"
+       x="149.63991"
+       y="-159.24068"
+       transform="rotate(90)"
+       inkscape:export-filename="../f284f7f7/isba_poster_package_schema.png"
+       inkscape:export-xdpi="600"
+       inkscape:export-ydpi="600" />
+    <rect
+       style="fill:none;stroke:#797979;stroke-width:0.481;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:0.481,0.962;stroke-opacity:1;stroke-miterlimit:4;stroke-dashoffset:0"
+       id="rect8220"
+       width="37.138275"
+       height="41.082195"
+       x="43.300797"
+       y="80.559662" />
+    <path
+       id="path8386"
+       style="fill:#797979;stroke:none;stroke-width:0.381;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       d="m 44.688248,61.050738 h 4.73836 l 1.74174,1.761075 v 6.065216 h -6.4801 z"
+       sodipodi:nodetypes="cccccc" />
+    <rect
+       style="fill:none;stroke:#797979;stroke-width:0.481;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:0.481,0.962;stroke-opacity:1;stroke-miterlimit:4;stroke-dashoffset:0"
+       id="rect8388"
+       width="70.209976"
+       height="19.373957"
+       x="43.296921"
+       y="59.659405" />
+    <path
+       id="path8412"
+       style="fill:#797979;stroke:none;stroke-width:0.381;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       d="m 52.096628,61.050738 h 4.73836 l 1.74174,1.761075 v 6.065216 h -6.4801 z"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       id="path8414"
+       style="fill:#797979;stroke:none;stroke-width:0.381;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       d="m 59.505008,61.050738 h 4.73836 l 1.74174,1.761075 v 6.065216 h -6.4801 z"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       id="path8416"
+       style="fill:#797979;stroke:none;stroke-width:0.381;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       d="m 44.692128,81.950987 h 4.73836 l 1.74174,1.761075 v 6.065216 h -6.4801 z"
+       sodipodi:nodetypes="cccccc" />
+    <rect
+       style="fill:none;stroke:#797979;stroke-width:0.481;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:0.481,0.962;stroke-opacity:1;stroke-miterlimit:4;stroke-dashoffset:0"
+       id="rect8418"
+       width="117.40063"
+       height="23.754639"
+       x="40.448715"
+       y="125.88528" />
+    <path
+       id="path8420"
+       style="fill:#797979;stroke:none;stroke-width:0.381;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       d="m 41.840048,127.2766 h 4.73836 l 1.74174,1.76109 v 6.06525 h -6.4801 z"
+       sodipodi:nodetypes="cccccc" />
+    <rect
+       style="fill:none;stroke:#797979;stroke-width:0.481;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:0.481,0.962;stroke-opacity:1;stroke-miterlimit:4;stroke-dashoffset:0"
+       id="rect8424"
+       width="40.120228"
+       height="34.308876"
+       x="117.7847"
+       y="56.756985" />
+    <path
+       id="path8426"
+       style="fill:#797979;stroke:none;stroke-width:0.381;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       d="m 119.23012,58.202406 h 4.73836 l 1.74174,1.761075 v 6.065216 h -6.4801 z"
+       sodipodi:nodetypes="cccccc" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,38.007748,107.77205)"
+       id="text8432"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect8434);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="83.051629"
+         id="tspan4247">.janno file</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,40.935398,62.522812)"
+       id="text8448"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect8450);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="83.051629"
+         id="tspan4249">.bib file</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,55.888628,41.54617)"
+       id="text8456"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect8458);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="83.051629"
+         id="tspan4251">genotype data</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,115.39783,38.697842)"
+       id="text8464"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect8466);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="83.051629"
+         id="tspan4253">.ssf file</tspan></text>
+    <g
+       id="g5946"
+       style="stroke:#797979;stroke-opacity:1;fill:#797979;fill-opacity:1">
+      <path
+         id="rect5055"
+         style="fill:#797979;stroke:#797979;stroke-width:0.681;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+         d="M 85.025048,82.433905 H 105.3335 l 7.46499,8.631956 V 120.79469 H 85.025048 Z"
+         sodipodi:nodetypes="cccccc" />
+      <path
+         style="fill:#797979;stroke:#797979;stroke-width:0.681;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker11122);fill-opacity:1"
+         d="m 85.025048,101.61429 h -4.58598"
+         id="path9256"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:#797979;stroke:#797979;stroke-width:0.681;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker11122);fill-opacity:1"
+         d="M 95.179268,82.433905 V 79.033364"
+         id="path9258"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:#797979;stroke:#797979;stroke-width:0.681;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker11122);fill-opacity:1"
+         d="m 98.911768,120.79469 v 5.09058"
+         id="path9254"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:#797979;stroke:#797979;stroke-width:0.681;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker11122);fill-opacity:1"
+         d="m 112.79849,91.065861 h 4.98621"
+         id="path9260"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(0,-0.26458333,0.26458333,0,68.474028,129.70692)"
+       id="text12533"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect12535);display:inline;fill:#ffffff;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="83.051629"
+         id="tspan4255">POSEIDON.yml</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,56.043368,46.383335)"
+       id="text1911"
+       style="font-style:normal;font-weight:normal;font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect1913);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="81.031513"
+         id="tspan4259"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4257">PLINK, EIGENSTRAT</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,115.63482,43.196366)"
+       id="text2008"
+       style="font-style:normal;font-weight:normal;font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect2010);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="81.031513"
+         id="tspan4263"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4261">tab-separated</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,41.388958,67.743504)"
+       id="text2052"
+       style="font-style:normal;font-weight:normal;font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect2054);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="81.031513"
+         id="tspan4267"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4265">BibTex</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,38.435248,112.46111)"
+       id="text2092"
+       style="font-style:normal;font-weight:normal;font-size:13.3333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect2094);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="81.031513"
+         id="tspan4271"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4269">tab-separated</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,80.899288,71.127934)"
+       id="text4546"
+       style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect4548);display:inline;fill:#ffffff;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="78.629562"
+         id="tspan4275"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4273">General </tspan></tspan><tspan
+         x="45.017578"
+         y="92.217559"
+         id="tspan4279"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4277">package
+</tspan></tspan><tspan
+         x="45.017578"
+         y="105.80556"
+         id="tspan4283"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4281">information
+</tspan></tspan><tspan
+         x="45.017578"
+         y="119.39355"
+         id="tspan4287"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4285">and file </tspan></tspan><tspan
+         x="45.017578"
+         y="132.98155"
+         id="tspan4291"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4289">paths to </tspan></tspan><tspan
+         x="45.017578"
+         y="146.56955"
+         id="tspan4295"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4293">the other </tspan></tspan><tspan
+         x="45.017578"
+         y="160.15755"
+         id="tspan4299"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4297">package </tspan></tspan><tspan
+         x="45.017578"
+         y="173.74554"
+         id="tspan4303"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4301">components</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,33.783618,73.374954)"
+       id="text5452"
+       style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect5454);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="78.629562"
+         id="tspan4307"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4305">Well specified </tspan></tspan><tspan
+         x="45.017578"
+         y="92.217559"
+         id="tspan4311"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4309">literature </tspan></tspan><tspan
+         x="45.017578"
+         y="105.80556"
+         id="tspan4315"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4313">references for the </tspan></tspan><tspan
+         x="45.017578"
+         y="119.39355"
+         id="tspan4319"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4317">package as a whole </tspan></tspan><tspan
+         x="45.017578"
+         y="132.98155"
+         id="tspan4323"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4321">or for the </tspan></tspan><tspan
+         x="45.017578"
+         y="146.56955"
+         id="tspan4327"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4325">individual samples </tspan></tspan><tspan
+         x="45.017578"
+         y="160.15755"
+         id="tspan4331"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4329">in the package</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,33.779748,52.474705)"
+       id="text6882"
+       style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect6884);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="78.629562"
+         id="tspan4335"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4333">SNP-wise genotype data in industry-</tspan></tspan><tspan
+         x="45.017578"
+         y="92.217559"
+         id="tspan4339"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4337">standard formats</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,30.931538,118.70062)"
+       id="text7960"
+       style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect7962);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="78.629562"
+         id="tspan4343"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4341">Context information for each sample in the package, including </tspan></tspan><tspan
+         x="45.017578"
+         y="92.217559"
+         id="tspan4347"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4345">spatiotemporal origin, genomic data quality and arbitrary </tspan></tspan><tspan
+         x="45.017578"
+         y="105.80556"
+         id="tspan4351"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4349">additional variables</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,108.32162,49.626373)"
+       id="text8965"
+       style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect8967);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="78.629562"
+         id="tspan4355"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4353">Meta- and context </tspan></tspan><tspan
+         x="45.017578"
+         y="92.217559"
+         id="tspan4359"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4357">information about </tspan></tspan><tspan
+         x="45.017578"
+         y="105.80556"
+         id="tspan4363"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4361">the sequencing data </tspan></tspan><tspan
+         x="45.017578"
+         y="119.39355"
+         id="tspan4367"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4365">used to generate the </tspan></tspan><tspan
+         x="45.017578"
+         y="132.98155"
+         id="tspan4371"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4369">genotype data in the </tspan></tspan><tspan
+         x="45.017578"
+         y="146.56955"
+         id="tspan4375"><tspan
+           style="font-weight:bold;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold'"
+           id="tspan4373">package</tspan></tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.681;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       id="rect15707"
+       width="40.130592"
+       height="32.047096"
+       x="117.77434"
+       y="92.457199" />
+    <g
+       id="g5903"
+       style="stroke:#000000;stroke-opacity:1;stroke-linejoin:bevel;fill:none;fill-opacity:1">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;fill-opacity:1"
+         d="m 58.100818,57.506867 57.558612,-3e-6"
+         id="path11582"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Square)"
+         d="M 41.144388,123.79827 V 83.072397 l 3.54774,-1.12141"
+         id="path9250"
+         sodipodi:nodetypes="ccc" />
+      <path
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker6543)"
+         d="m 41.144388,83.072397 v -25.56553 h 16.95643 l 1.40419,3.543871"
+         id="path11580"
+         sodipodi:nodetypes="cccc" />
+      <path
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker6255);marker-end:url(#marker5820)"
+         d="m 119.23012,58.202406 -3.57069,-0.695542 0.0924,66.291406 H 41.144418 l 0.69563,3.47833"
+         id="path9248"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.665;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+         d="m 115.65766,108.48074 2.11668,1e-5"
+         id="path15821"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,108.32162,76.084718)"
+       id="text16313"
+       style="font-style:normal;font-weight:normal;font-size:10.6667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect16315);display:inline;fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="45.017578"
+         y="78.629562"
+         id="tspan4379"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4377">The package files </tspan></tspan><tspan
+         x="45.017578"
+         y="92.080024"
+         id="tspan4383"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4381">are interconnected </tspan></tspan><tspan
+         x="45.017578"
+         y="105.53049"
+         id="tspan4387"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4385">with foreign key </tspan></tspan><tspan
+         x="45.017578"
+         y="118.98095"
+         id="tspan4391"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4389">relationships:
+</tspan></tspan><tspan
+         x="45.017578"
+         y="132.43141"
+         id="tspan4395"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4393">
+</tspan></tspan><tspan
+         x="45.017578"
+         y="145.88188"
+         id="tspan4399"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4397">.ind/.fam &lt;&gt; .janno
+</tspan></tspan><tspan
+         x="45.017578"
+         y="159.33235"
+         id="tspan4403"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4401">.janno    &lt;&gt; .ssf
+</tspan></tspan><tspan
+         x="45.017578"
+         y="172.78282"
+         id="tspan4407"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4405">.janno    &lt;&gt; .bib
+</tspan></tspan><tspan
+         x="45.017578"
+         y="186.23329"
+         id="tspan4411"><tspan
+           style="font-family:'Courier New';-inkscape-font-specification:'Courier New'"
+           id="tspan4409">
+</tspan></tspan></text>
+  </g>
+</svg>
