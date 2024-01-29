@@ -30,10 +30,29 @@ individuals_per_year <- individuals_with_year %>%
 
 #### prepare plot ####
 
-individuals_per_year %>%
+p <- individuals_per_year %>%
   dplyr::filter(year < 2023) %>%
   ggplot() +
-  geom_col(aes(x = year, y = n))
+  geom_col(aes(x = year, y = n)) +
+  geom_text(
+    aes(
+      x = year, y = n,
+      label = dplyr::case_when(n < 10 ~ as.character(n), n >= 10 ~ paste0("≈", round(n, -1)))
+    ),
+    vjust = -0.25, size = 3
+  ) +
+  scale_x_continuous(breaks = 2010:2022) +
+  theme_bw() +
+  theme(axis.title.x = element_blank()) +
+  ylab("Approx. nr of ancient individuals")
 
-
-
+ggsave(
+  paste0("plots/presentation/samples_per_year.png"),
+  plot = p,
+  device = "png",
+  scale = 0.4,
+  dpi = 300,
+  width = 500, height = 220, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
