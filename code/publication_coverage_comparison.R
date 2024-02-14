@@ -46,6 +46,24 @@ publication_overlap <- dplyr::full_join(
     Publication = factor(Publication, levels = rev(unique(Publication)))
   )
 
+# table_for_stephan <- dplyr::full_join(
+#   pca_bib_linked_to_samples,
+#   paa_bib_linked_to_samples,
+#   by = c("Publication", "year"),
+#   suffix = c("_PCA", "_PAA")
+# ) %>%
+#   dplyr::group_by(Publication) %>%
+#   dplyr::summarize(
+#     year = min(year),
+#     doi = na.omit(c(doi_PAA, doi_PCA))[1],
+#     archive_PCA = any(!is.na(archive_PCA)),
+#     archive_PAA = any(!is.na(archive_PAA))
+#   ) %>%
+#   dplyr::arrange(year, Publication) %>%
+#   dplyr::filter(!is.na(doi))
+# 
+# readr::write_csv(table_for_stephan, file = "publication_list.csv")
+
 make_one_figure <- function(x) {
   x %>%
     ggplot() +
