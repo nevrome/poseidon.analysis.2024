@@ -16,7 +16,25 @@ publication_per_package <- dplyr::bind_rows(pca, paa) %>%
   dplyr::mutate(main_publication = lookup_paa_key(main_publication)) %>%
   dplyr::summarise(.groups = "drop")
 
-publication_count <- publication_per_package %>%
+unique_publication_count <- publication_per_package %>%
+  dplyr::distinct(archive, main_publication, .keep_all = T) %>%
+  dplyr::group_by(archive) %>%
+  dplyr::summarise(unique_n = dplyr::n(), .groups = "drop")
+
+summarized_multi_counting <- publication_per_package %>%
+  dplyr::group_by(archive, main_publication) %>%
+  dplyr::summarise(
+    n = dplyr::n(),
+    package = dplyr::case_when(
+      n == 1 ~ package[1],
+      n > 1  ~ "appears in multiple packages"
+    ),
+    .groups = "drop"
+  ) %>%
+  dplyr::arrange(dplyr::desc(n)) %>%
+  dplyr::select(-n)
+
+publication_count <- summarized_multi_counting %>%
   dplyr::group_by(archive, package) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   dplyr::group_by(archive) %>%
@@ -24,21 +42,22 @@ publication_count <- publication_per_package %>%
   dplyr::mutate(colour_group = rep_len(c("A", "B"), dplyr::n())) %>%
   dplyr::ungroup()
 
-unique_publication_count <- publication_per_package %>%
-  dplyr::distinct(archive, main_publication, .keep_all = T) %>%
-  dplyr::group_by(archive) %>%
-  dplyr::summarise(unique_n = dplyr::n(), .groups = "drop")
+#package_publication_plot <-
 
-package_publication_plot <- publication_count %>%
+publication_count %>%
   ggplot() +
-  geom_bar(
+  ggpattern::geom_col_pattern(
     mapping = aes(
       x = archive,
       y = n,
-      group = factor(package, levels = package),
-      fill = colour_group
-    ),
-    stat = "identity"
+      group = package,
+      fill = colour_group,
+      pattern = package == "appears in multiple packages"
+    )
+  ) +
+  ggpattern::scale_pattern_manual(
+    values = c("TRUE" = "stripe", "FALSE" = "none"),
+    guide = "none"
   ) +
   geom_point(
     data = unique_publication_count,
