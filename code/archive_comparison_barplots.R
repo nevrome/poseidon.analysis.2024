@@ -16,18 +16,13 @@ publication_per_package <- dplyr::bind_rows(pca, paa) %>%
   dplyr::mutate(main_publication = lookup_paa_key(main_publication)) %>%
   dplyr::summarise(.groups = "drop")
 
-unique_publication_count <- publication_per_package %>%
-  dplyr::distinct(archive, main_publication, .keep_all = T) %>%
-  dplyr::group_by(archive) %>%
-  dplyr::summarise(unique_n = dplyr::n(), .groups = "drop")
-
 summarized_multi_counting <- publication_per_package %>%
   dplyr::group_by(archive, main_publication) %>%
   dplyr::summarise(
     n = dplyr::n(),
     package = dplyr::case_when(
       n == 1 ~ package[1],
-      n > 1  ~ "appears in multiple packages"
+      n > 1  ~ "_" # appears in multiple packages
     ),
     .groups = "drop"
   ) %>%
@@ -39,12 +34,12 @@ publication_count <- summarized_multi_counting %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   dplyr::group_by(archive) %>%
   dplyr::arrange(archive, package) %>%
+  # alternating colouring of packages
   dplyr::mutate(colour_group = rep_len(c("A", "B"), dplyr::n())) %>%
+  dplyr::mutate(colour_group = ifelse(package == "_", "A", colour_group)) %>%
   dplyr::ungroup()
 
-#package_publication_plot <-
-
-publication_count %>%
+package_publication_plot <- publication_count %>%
   ggplot() +
   ggpattern::geom_col_pattern(
     mapping = aes(
@@ -52,20 +47,15 @@ publication_count %>%
       y = n,
       group = package,
       fill = colour_group,
-      pattern = package == "appears in multiple packages"
-    )
+      pattern = package == "_"
+    ),
+    pattern_fill = "lightgrey",
+    pattern_colour = NA,
+    pattern_density = 0.3
   ) +
   ggpattern::scale_pattern_manual(
     values = c("TRUE" = "stripe", "FALSE" = "none"),
     guide = "none"
-  ) +
-  geom_point(
-    data = unique_publication_count,
-    mapping = aes(
-      x = archive,
-      y = unique_n
-    ),
-    shape = 18
   ) +
   scale_fill_manual(values = c("A" = "darkgrey", "B" = "lightgrey")) +
   guides(fill = guide_legend(
@@ -83,7 +73,6 @@ publication_count %>%
     plot.title = element_text(size = 11)
   ) +
   ggtitle(
-    #"Publications per Poseidon package",
     "Number of main sample-carrying publications represented in each package"
   )
 
