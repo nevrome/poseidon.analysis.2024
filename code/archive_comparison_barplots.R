@@ -645,13 +645,22 @@ ggsave(
 
 # combine plots
 
-p <- cowplot::plot_grid(
+p_panel <- cowplot::plot_grid(
   package_publication_plot, publication_barcode_plot,
   source_plot_simple, sources_sankey_plot,
   dating_plot_simple, coord_plot_simple,
   nrow = 3, ncol = 2, align = "v", axis = "tb",
   labels = c("A", "B", "C", "D", "E", "F")
 )
+
+p_title <- cowplot::ggdraw() +
+  cowplot::draw_label(
+    "Comparison of PAA (AADR V54.1.p1) and PCA by different metrics",
+    fontface = "bold",
+    hjust = 1.11
+  )
+
+p <- cowplot::plot_grid(p_title, p_panel, ncol = 1, rel_heights = c(0.05, 1))
 
 ggsave(
   paste0("plots/figure_barplots.pdf"),
