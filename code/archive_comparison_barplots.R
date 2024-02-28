@@ -7,9 +7,7 @@ load("data/janno_data.RData")
 load("data/bib_data.RData")
 load("data/bibkey_lookup_hashmap.RData")
 
-#### barplots ####
-
-# publications barplot
+#### A: publications barplot ####
 
 publication_per_package <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, package, main_publication) %>%
@@ -89,7 +87,7 @@ ggsave(
   bg = "white"
 )
 
-# publication comparison
+#### B: publication comparison barcode plot ####
 
 keys_with_years <- dplyr::bind_rows(pca_bib, paa_bib) %>%
   dplyr::select(archive, bibtexkey, year) %>%
@@ -195,7 +193,7 @@ ggsave(
   bg = "white"
 )
 
-# source barplot
+#### C: source barplot ####
 
 source_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
@@ -206,6 +204,44 @@ source_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::group_by(archive, source) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
+
+# simple version of the plot
+source_plot_simple <- source_count_approx_ind_id %>%
+  ggplot() +
+  geom_col(
+    mapping = aes(x = archive, y = n, fill = source)
+  ) +
+  coord_flip() +
+  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
+  guides(
+    fill = guide_legend(
+      title = "Original data source",
+      reverse = TRUE
+    )
+  ) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    axis.title = element_blank(),
+    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.justification = "right",
+    plot.title = element_text(size = 11)
+  ) +
+  ggtitle(
+    # "Samples per original data source",
+    "Number of individuals/samples by source & primary mechanism of origin"
+  )
+
+ggsave(
+  paste0("plots/figure_barplots_C_simple.pdf"),
+  plot = source_plot_simple,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
 
 source_count <- dplyr::full_join(
   source_count_poseidon_id, source_count_approx_ind_id,
@@ -225,6 +261,7 @@ source_count <- dplyr::full_join(
     count_type = factor(count_type, levels = c("n_diff", "n_approx_ind_id"))
   )
 
+# full version of the plot
 source_plot <- source_count %>%
   ggplot() +
   ggpattern::geom_col_pattern(
