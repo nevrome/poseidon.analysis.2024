@@ -492,10 +492,10 @@ ggsave(
   bg = "white"
 )
 
-# coords barplot
+#### F: coords barplot ####
 
-coord_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
+coord_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::mutate(
     has_coordinates = dplyr::case_when(
       !is.na(Latitude) & !is.na(Longitude) ~ "available",
@@ -505,8 +505,45 @@ coord_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, has_coordinates) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
-coord_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
-  dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
+coord_plot_simple <- coord_count_approx_ind_id %>%
+  ggplot() +
+  geom_col(
+    mapping = aes(x = archive, y = n, fill = has_coordinates)
+  ) +
+  coord_flip() +
+  scale_fill_manual(values = c("lightgrey", "darkgrey")) +
+  guides(
+    fill = guide_legend(
+      title = "Coordinate information",
+      reverse = TRUE
+    )
+  ) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    axis.title = element_blank(),
+    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.justification = "right",
+    plot.title = element_text(size = 11)
+  ) +
+  ggtitle(
+    #"Samples with spatial coordinates",
+    "Number of individuals with latitude and longitude coordinates"
+  )
+
+ggsave(
+  paste0("plots/figure_barplots_F_simple.pdf"),
+  plot = coord_plot_simple,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
+
+coord_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
   dplyr::mutate(
     has_coordinates = dplyr::case_when(
       !is.na(Latitude) & !is.na(Longitude) ~ "available",
@@ -581,7 +618,9 @@ ggsave(
 # combine plots
 
 p <- cowplot::plot_grid(
-  package_publication_plot, publication_barcode_plot, source_plot, sources_sankey_plot, dating_plot, coord_plot,
+  package_publication_plot, publication_barcode_plot,
+  source_plot_simple, sources_sankey_plot,
+  dating_plot_simple, coord_plot_simple,
   nrow = 3, ncol = 2, align = "v", axis = "tb",
   labels = c("A", "B", "C", "D", "E", "F")
 )
