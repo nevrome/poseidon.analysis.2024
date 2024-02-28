@@ -34,6 +34,7 @@ publication_count <- summarized_multi_counting %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
   dplyr::group_by(archive) %>%
   dplyr::arrange(archive, package) %>%
+  dplyr::mutate(package = factor(package, levels = package %>% unique)) %>%
   # alternating colouring of packages
   dplyr::mutate(colour_group = rep_len(c("A", "B"), dplyr::n())) %>%
   dplyr::mutate(colour_group = ifelse(package == "_", "A", colour_group)) %>%
@@ -60,7 +61,8 @@ package_publication_plot <- publication_count %>%
   scale_fill_manual(values = c("A" = "darkgrey", "B" = "lightgrey")) +
   guides(fill = guide_legend(
     title = "Alternating colours for packages:  ",
-    label = F
+    label = F,
+    override.aes = list(pattern = "none")
   )) +
   coord_flip() +
   theme_bw() +
@@ -153,11 +155,12 @@ publication_barcode_plot <- samples_per_publication %>%
     data = year_separators %>% dplyr::mutate(x = "PCA"),
     mapping = aes(x = x, y = n, label= year),
     position = position_nudge(x = -0.5),
-    angle = 90, direction = "x", segment.color = 'transparent',
+    angle = 90, segment.color = 'transparent',
+    direction = "x",
     hjust = -0.2,
     size = 2.4,
     box.padding = 0.1
-  ) + 
+  ) +
   geom_point(
     data = year_separators %>% dplyr::mutate(x = "PCA"),
     mapping = aes(x = x, y = n),
@@ -174,6 +177,7 @@ publication_barcode_plot <- samples_per_publication %>%
     plot.title = element_text(size = 11)
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
+  scale_y_continuous(breaks = seq(0,18000,3000)) +
   guides(fill = guide_legend(title = "Is the respective sample in the archive?")) +
   ggtitle(
     #"Samples per Publication",
@@ -225,7 +229,8 @@ source_plot <- source_count %>%
   ggplot() +
   ggpattern::geom_col_pattern(
     mapping = aes(x = archive, y = n, fill = source, pattern = count_type),
-    pattern_color = "white", pattern_fill = "white"
+    pattern_color = "white",
+    pattern_fill = "white"
   ) +
   coord_flip() +
   scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
