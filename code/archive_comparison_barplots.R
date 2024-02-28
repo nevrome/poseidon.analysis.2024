@@ -212,7 +212,16 @@ source_plot_simple <- source_count_approx_ind_id %>%
     mapping = aes(x = archive, y = n, fill = source)
   ) +
   coord_flip() +
-  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
+  scale_fill_manual(
+    values = c(
+      "AADR v42.4" = "#795043",
+      "AADR v44.3" = "#1C181A",
+      "AADR v50"   = "#D9D0D3",
+      "AADR v54.1.p1" = "#CCBA72",
+      "Extracted from paper" = "#9986A5",
+      "Submitted by author" = "lightblue"
+    )
+  ) + #wesanderson::wes_palette("IsleofDogs1")
   guides(
     fill = guide_legend(
       title = "Original data source",
@@ -270,7 +279,16 @@ source_plot <- source_count %>%
     pattern_fill = "white"
   ) +
   coord_flip() +
-  scale_fill_manual(values = wesanderson::wes_palette("IsleofDogs1")) +
+  scale_fill_manual(
+    values = c(
+      "AADR v42.4" = "#795043",
+      "AADR v44.3" = "#1C181A",
+      "AADR v50"   = "#D9D0D3",
+      "AADR v54.1.p1" = "#CCBA72",
+      "Extracted from paper" = "#9986A5",
+      "Submitted by author" = "lightblue"
+    )
+  ) +
   ggpattern::scale_pattern_manual(
     values = c("n_approx_ind_id" = "none", "n_diff" = "stripe"),
     guide = "none"
@@ -341,7 +359,17 @@ sources_sankey_plot <- sankey_sources_input %>%
     #space = 200
   ) +
   labs(x = NULL) +
-  scale_fill_manual(values = source_colour_mapping, na.value = "lightblue") +
+  scale_fill_manual(
+    values = c(
+      "AADR v42.4" = "#795043",
+      "AADR v44.3" = "#1C181A",
+      "AADR v50"   = "#D9D0D3",
+      "AADR v54.1.p1" = "#CCBA72",
+      "Extracted from paper" = "#9986A5",
+      "Submitted by author" = "lightblue"
+    ),
+    na.value = "darkgrey"
+  ) +
   scale_x_discrete(expand = c(0.1, 0.1)) +
   guides(fill = guide_legend(title = "Original data source")) +
   theme_bw() +
