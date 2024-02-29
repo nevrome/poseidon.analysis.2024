@@ -160,7 +160,8 @@ map_plot <- ggplot() +
   ) +
   ggtitle(
     paste("Spatial and temporal distribution of ancient samples in PAA and PCA"),
-    paste0(Sys.Date(), ", World in Natural Earth projection")
+    #paste0(Sys.Date(), ",
+    "World in Natural Earth projection"
   )
 
 # time histogram
@@ -217,7 +218,7 @@ time_hist_plot <- ggplot() +
     legend.box.margin = margin(0,0,0,0),
     legend.background = element_rect(fill = NA),
     #legend.box = "vertical",
-    legend.spacing.y = unit(-0.1, "cm"),
+    legend.spacing.y = unit(-0.3, "cm"),
     axis.text.y = element_text(angle = 20, hjust = 1, vjust = 0.5),
     axis.title.x = element_blank()
   ) +
