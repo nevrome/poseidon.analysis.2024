@@ -26,6 +26,13 @@ This repository contains the following main top level directories:
 
 ### Reproducing the results:
 
+The following versions of the Poseidon public archives downloaded on XX-XX-2024 were analysed:
+
+|archive     |Git commit | Corresponding of package versions |
+|:-----------|:----------|:----------------------------------|
+|PCA         |to fill    |link to chronicle file             |
+|PAA         |to fill    |to fill                            |
+
 The analysis was performed with R v4.3.2 using the following packages and package versions as available on CRAN on 2024-03-13:
 
 <details>
