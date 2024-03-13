@@ -24,6 +24,43 @@ This repository contains the following main top level directories:
 - `plots`: Rendered versions of the plots for the publication, not tracked by Git.
 - `schemata`: Schematic drawings created for the paper.
 
+### Reproducing the results:
+
+The analysis was performed with R v4.3.2 using the following packages and package versions as available on CRAN on 2024-03-13:
+
+<details>
+<summary>Generated with this code</summary>
+```r
+tibble::tibble(
+  package = rrtools::add_dependencies_to_description(just_packages = T),
+  version = purrr::map_chr(package, \(x) utils::packageVersion(x) |> as.character())
+) |> knitr::kable()
+```
+</details>
+
+|package     |version   |
+|:-----------|:---------|
+|bib2df      |1.1.1     |
+|cowplot     |1.1.3     |
+|dplyr       |1.1.4     |
+|ggpattern   |1.0.1     |
+|ggplot2     |3.5.0     |
+|ggrepel     |0.9.5     |
+|ggsankey    |0.0.99999 |
+|giscoR      |0.4.0     |
+|hash        |2.2.6.3   |
+|janno       |1.0.0     |
+|magrittr    |2.0.3     |
+|purrr       |1.0.2     |
+|readr       |2.1.5     |
+|scales      |1.3.0     |
+|sf          |1.0.15    |
+|stringr     |1.5.1     |
+|tibble      |3.2.1     |
+|tidyr       |1.3.1     |
+|tidyselect  |1.2.1     |
+|wesanderson |0.3.7     |
+
 ### Licenses:
 
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/) year: 2024, copyright holder: Clemens Schmid
