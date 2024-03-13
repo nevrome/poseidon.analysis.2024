@@ -37,11 +37,13 @@ The analysis was performed with R v4.3.2 using the following packages and packag
 
 <details>
 <summary>Generated with this code</summary>
+  
 ```r
 tibble::tibble(
   package = rrtools::add_dependencies_to_description(just_packages = T),
   version = purrr::map_chr(package, \(x) utils::packageVersion(x) |> as.character())
 ) |> knitr::kable()
+
 ```
 </details>
 
