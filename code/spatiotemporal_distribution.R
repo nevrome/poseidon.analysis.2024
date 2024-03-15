@@ -26,16 +26,30 @@ paa_ancient_with_coords <- paa %>%
   dplyr::filter(!is.na(Latitude) & !is.na(Longitude)) %>%
   tibble::as_tibble()
 
+# reduce selection from all Poseidon_IDs to approx. individual count
+
+pca_individuals <- pca_ancient_with_coords %>%
+  dplyr::group_by(Approx_Individual_ID) %>%
+  dplyr::arrange(dplyr::desc(Nr_SNPs)) %>%
+  dplyr::slice_head() %>%
+  dplyr::ungroup()
+
+paa_individuals <- paa_ancient_with_coords %>%
+  dplyr::group_by(Approx_Individual_ID) %>%
+  dplyr::arrange(dplyr::desc(Nr_SNPs)) %>%
+  dplyr::slice_head() %>%
+  dplyr::ungroup()
+
 # make sample data spatial
 
-pca_ancient_sf_6933 <- pca_ancient_with_coords %>%
+pca_ancient_sf_6933 <- pca_individuals %>%
   sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
   sf::st_transform(6933)
 
 pca_ancient_author_submitted_sf_6933 <- pca_ancient_sf_6933 %>%
   dplyr::filter(package %in% pca_author_packages)
 
-paa_ancient_sf_6933 <- paa_ancient_with_coords %>%
+paa_ancient_sf_6933 <- paa_individuals %>%
   sf::st_as_sf(coords = c('Longitude', 'Latitude'), crs = 4326) %>%
   sf::st_transform(6933)
 
@@ -159,15 +173,24 @@ map_plot <- ggplot() +
     plot.title = element_text(face = "bold", size = 14)
   ) +
   ggtitle(
-    paste("Spatial and temporal distribution of ancient samples in PAA and PCA"),
-    #paste0(Sys.Date(), ",
-    "World in Natural Earth projection"
+    paste("Spatial and temporal distribution of ancient human individuals in PCA and PAA"),
+    # https://stackoverflow.com/questions/35957129/r-ggplot2-evaluate-object-inside-expression
+    as.expression(bquote(
+      "World in Natural Earth projection, "~
+      "Number of ancient individuals with spatial and temporal data:"~
+      "PCA"%~~%.(round(nrow(pca_individuals), -2))~"&"~
+      "PAA"%~~%.(round(nrow(paa_individuals), -2))
+    ))
   )
 
 # time histogram
 
-samples_with_mean_age <- dplyr::bind_rows(pca_ancient_with_coords, paa_ancient_with_coords) %>%
-  dplyr::select(Approx_Individual_ID, tidyselect::starts_with("Date_BC_AD"), package, archive, source) %>%
+samples_with_mean_age <- dplyr::bind_rows(pca_individuals, paa_individuals) %>%
+  dplyr::select(
+    Approx_Individual_ID,
+    tidyselect::starts_with("Date_BC_AD"),
+    package, archive, source
+  ) %>%
   dplyr::mutate(
     Date_BC_AD_Median = dplyr::case_when(
       is.na(Date_BC_AD_Median) ~ (Date_BC_AD_Start + Date_BC_AD_Stop) / 2,
@@ -206,19 +229,19 @@ time_hist_plot <- ggplot() +
   ) +
   geom_point(
     data = age_groups_author_submitted,
-    mapping = aes(x = age_cut, y = -80, color = "Author-submitted samples"),
+    mapping = aes(x = age_cut, y = -80, color = "Author-submitted samples (PCA)"),
     shape = 18, size = 2.5
   ) +
-  scale_color_manual("", values = c("Author-submitted samples" = "black")) +
+  scale_color_manual("", values = c("Author-submitted samples (PCA)" = "black")) +
   ylim(-100, 1500) +
   theme_bw() +
   theme(
-    legend.position = c(.7,0.15),
+    legend.position = c(.75,0.10),
     legend.box.background = element_rect(colour = "black", fill = "white"),
     legend.box.margin = margin(0,0,0,0),
     legend.background = element_rect(fill = NA),
     #legend.box = "vertical",
-    legend.spacing.y = unit(-0.3, "cm"),
+    legend.spacing.y = unit(-0.9, "cm"),
     axis.text.y = element_text(angle = 20, hjust = 1, vjust = 0.5),
     axis.title.x = element_blank()
   ) +
@@ -226,7 +249,7 @@ time_hist_plot <- ggplot() +
     values = c("PAA" = "#f37748", "PCA" = "#095256")
   ) +
   guides(
-    fill = guide_legend(title = "Archive", direction = "horizontal")
+    fill = guide_legend(title = "Archive", direction = "horizontal", order = 2)
     #color = guide_legend()
   ) +
   coord_flip() +

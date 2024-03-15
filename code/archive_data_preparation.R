@@ -96,6 +96,7 @@ paa <- paa_raw %>%
 #   dplyr::arrange(Approx_Individual_ID) %>%
 #   dplyr::filter(dplyr::lag(as.character(archive), n = 1, default = "") != as.character(archive)) %>%
 #   View()
+# very similar entries should appear right after each other
 
 # set levels of source factor
 source_order <- c(
