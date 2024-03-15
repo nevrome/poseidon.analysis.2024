@@ -28,10 +28,12 @@ This repository contains the following main top level directories:
 
 The following versions of the Poseidon public archives downloaded on XX-XX-2024 were analysed:
 
-|archive     |Git commit | Corresponding of package versions |
+|archive     |Git commit | Corresponding package versions |
 |:-----------|:----------|:----------------------------------|
-|PCA         |to fill    |link to chronicle file             |
-|PAA         |to fill    |to fill                            |
+|PCA         |[b159991](https://github.com/poseidon-framework/community-archive/tree/b159991)|[archive.chron](https://github.com/poseidon-framework/community-archive/blob/b15999124b357794fbc9b2e18fe86dbcd9947788/archive.chron)|
+|PAA         |[60ddda0](https://github.com/poseidon-framework/aadr-archive/tree/60ddda0)|[archive.chron](https://github.com/poseidon-framework/aadr-archive/blob/60ddda0/archive.chron)|
+
+The archive.chron files include all present and past package versions, but only the latest ones were considered here.
 
 The analysis was performed with R v4.3.2 using the following packages and package versions as available on CRAN on 2024-03-13:
 
