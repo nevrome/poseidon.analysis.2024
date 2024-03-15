@@ -26,7 +26,7 @@ This repository contains the following main top level directories:
 
 ### Reproducing the results:
 
-The following versions of the Poseidon public archives downloaded on XX-XX-2024 were analysed:
+The following versions of the Poseidon public archives downloaded on 2024-03-15 were analysed:
 
 |archive     |Git commit | Corresponding package versions |
 |:-----------|:----------|:----------------------------------|
