@@ -30,7 +30,7 @@ The following versions of the Poseidon public archives downloaded on 2024-03-15 
 
 |archive     |Git commit | Corresponding package versions |
 |:-----------|:----------|:----------------------------------|
-|PCA         |[b159991](https://github.com/poseidon-framework/community-archive/tree/b159991)|[archive.chron](https://github.com/poseidon-framework/community-archive/blob/b15999124b357794fbc9b2e18fe86dbcd9947788/archive.chron)|
+|PCA         |[b159991](https://github.com/poseidon-framework/community-archive/tree/b159991)|[archive.chron](https://github.com/poseidon-framework/community-archive/blob/b159991/archive.chron)|
 |PAA         |[60ddda0](https://github.com/poseidon-framework/aadr-archive/tree/60ddda0)|[archive.chron](https://github.com/poseidon-framework/aadr-archive/blob/60ddda0/archive.chron)|
 
 The archive.chron files include all present and past package versions, but only the latest ones were considered here.
