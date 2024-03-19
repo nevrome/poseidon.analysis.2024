@@ -1,3 +1,6 @@
+# OSF upload
+osf/to_upload/
+
 # Output
 *.png
 plots/

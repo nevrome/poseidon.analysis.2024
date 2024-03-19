@@ -1,0 +1,8 @@
+poseidon-schema,https://github.com/poseidon-framework/poseidon-schema/archive/refs/heads/master.zip
+poseidon-hs,https://github.com/poseidon-framework/poseidon-hs/archive/refs/heads/master.zip
+poseidon-analysis-hs,https://github.com/poseidon-framework/poseidon-analysis-hs/archive/refs/heads/main.zip
+qjanno,https://github.com/poseidon-framework/qjanno/archive/refs/heads/main.zip
+janno,https://github.com/poseidon-framework/janno/archive/refs/heads/master.zip
+poseidon-framework.github.io,https://github.com/poseidon-framework/poseidon-framework.github.io/archive/refs/heads/master.zip
+poseidon-blog,https://github.com/poseidon-framework/poseidon-blog/archive/refs/heads/main.zip
+aadr2poseidon,https://github.com/poseidon-framework/aadr2poseidon/archive/refs/heads/main.zip
