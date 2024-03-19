@@ -1,0 +1,1 @@
+This OSF compendium contains copies of multiple repositories with specification and code developed for and in the Poseidon framework for archaeogenetic human genotype data management.
