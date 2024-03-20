@@ -501,11 +501,11 @@ dating_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Approx_Individual_ID, .keep_all = T) %>%
   dplyr::group_by(archive, Date_Type) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
-  tidyr::replace_na(list(Date_Type = "unknown")) %>%
+  tidyr::replace_na(list(Date_Type = "missing")) %>%
   dplyr::mutate(
     Date_Type = factor(
       Date_Type,
-      levels = c("modern", "C14", "contextual", "unknown") %>% rev()
+      levels = c("modern", "C14", "contextual", "missing") %>% rev()
     )
   )
 
@@ -525,13 +525,13 @@ dating_plot_simple <- dating_count_approx_ind_id %>%
   ) +
   theme_bw() +
   theme(
-    legend.position = "bottom",
-    axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.position = "top",
+    axis.title.y = element_blank(),
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  ggtitle(
+  ylab(
     # "Samples with age information",
     "Number of individuals with different types of archaeological age information"
   )
@@ -552,11 +552,11 @@ dating_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::distinct(archive, Poseidon_ID, .keep_all = T) %>%
   dplyr::group_by(archive, Date_Type) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
-  tidyr::replace_na(list(Date_Type = "unknown")) %>%
+  tidyr::replace_na(list(Date_Type = "missing")) %>%
   dplyr::mutate(
     Date_Type = factor(
       Date_Type,
-      levels = c("modern", "C14", "contextual", "unknown") %>% rev()
+      levels = c("modern", "C14", "contextual", "missing") %>% rev()
     )
   )
 
@@ -599,13 +599,13 @@ dating_plot <- dating_count %>%
   ) +
   theme_bw() +
   theme(
-    legend.position = "bottom",
-    axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.position = "top",
+    axis.title.y = element_blank(),
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  ggtitle(
+  ylab(
     # "Samples with age information",
     "Number of individuals/samples with different types of archaeological age information"
   )
@@ -649,13 +649,13 @@ coord_plot_simple <- coord_count_approx_ind_id %>%
   ) +
   theme_bw() +
   theme(
-    legend.position = "bottom",
-    axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.position = "top",
+    axis.title.y = element_blank(),
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  ggtitle(
+  ylab(
     #"Samples with spatial coordinates",
     "Number of individuals with latitude and longitude coordinates"
   )
@@ -722,13 +722,13 @@ coord_plot <- coord_count %>%
   ) +
   theme_bw() +
   theme(
-    legend.position = "bottom",
-    axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.position = "top",
+    axis.title.y = element_blank(),
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  ggtitle(
+  ylab(
     #"Samples with spatial coordinates",
     "Number of individuals/samples with latitude and longitude coordinates"
   )
