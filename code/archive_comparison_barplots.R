@@ -73,7 +73,7 @@ package_publication_plot <- publication_count %>%
     plot.title = element_text(size = 11)
   ) +
   ylab(
-    "Number of main sample-carrying publications per package"
+    "Number of main data publications per package"
   )
 
 ggsave(
@@ -178,7 +178,7 @@ publication_barcode_plot <- samples_per_publication %>%
   scale_y_continuous(breaks = seq(0,18000,3000)) +
   guides(fill = guide_legend(title = "Is the respective individual in the archive?")) +
   ylab(
-    "Number of individuals for each referenced publication by year"
+    "Number of individuals per publication by year"
   )
 
 ggsave(
@@ -238,14 +238,13 @@ source_plot_simple <- source_count_approx_ind_id_simple %>%
   theme_bw() +
   theme(
     legend.position = "top",
-    axis.title = element_blank(),
+    axis.title.y = element_blank(),
     legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  xlab(
-    # "Samples per original data source",
-    "Number of individuals by source & primary mechanism of origin"
+  ylab(
+    "Number of individuals per source & primary mechanism of origin"
   )
 
 ggsave(
@@ -310,13 +309,13 @@ source_plot <- source_count %>%
   theme_bw() +
   theme(
     legend.position = "top",
-    axis.title = element_blank(),
+    axis.title.y = element_blank(),
     legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  xlab(
-    "Number of individuals/samples by source & primary mechanism of origin"
+  ylab(
+    "Number of individuals/samples per source & primary mechanism of origin"
   )
 
 ggsave(
@@ -404,8 +403,7 @@ sources_sankey_plot_simple <- sankey_sources_input_simple %>%
   ) +
   coord_flip() +
   ylab(
-    # "Samples matching across archives",
-    "Number of individuals that match across the archives by data source"
+    "Number of individuals that match across archives per data source"
   )
 
 ggsave(
@@ -480,8 +478,7 @@ sources_sankey_plot <- sankey_sources_input %>%
   ) +
   coord_flip() +
   ylab(
-    # "Samples matching across archives",
-    "Number of individuals that match across the archives (by data source)"
+    "Number of individuals that match across archives per data source"
   )
 
 ggsave(
@@ -532,7 +529,6 @@ dating_plot_simple <- dating_count_approx_ind_id %>%
     plot.title = element_text(size = 11)
   ) +
   ylab(
-    # "Samples with age information",
     "Number of individuals with different types of archaeological age information"
   )
 
@@ -606,7 +602,6 @@ dating_plot <- dating_count %>%
     plot.title = element_text(size = 11)
   ) +
   ylab(
-    # "Samples with age information",
     "Number of individuals/samples with different types of archaeological age information"
   )
 
@@ -629,7 +624,7 @@ coord_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
     has_coordinates = dplyr::case_when(
       !is.na(Latitude) & !is.na(Longitude) ~ "available",
       TRUE ~ "missing"
-    )
+    ) %>% factor(., levels = c("missing", "available"))
   ) %>%
   dplyr::group_by(archive, has_coordinates) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
@@ -640,7 +635,7 @@ coord_plot_simple <- coord_count_approx_ind_id %>%
     mapping = aes(x = archive, y = n, fill = has_coordinates)
   ) +
   coord_flip() +
-  scale_fill_manual(values = c("lightgrey", "darkgrey")) +
+  scale_fill_manual(values = c("darkgrey", "lightgrey")) +
   guides(
     fill = guide_legend(
       title = "Coordinate information",
@@ -656,7 +651,6 @@ coord_plot_simple <- coord_count_approx_ind_id %>%
     plot.title = element_text(size = 11)
   ) +
   ylab(
-    #"Samples with spatial coordinates",
     "Number of individuals with latitude and longitude coordinates"
   )
 
@@ -677,7 +671,7 @@ coord_count_poseidon_id <- dplyr::bind_rows(pca, paa) %>%
     has_coordinates = dplyr::case_when(
       !is.na(Latitude) & !is.na(Longitude) ~ "available",
       TRUE ~ "missing"
-    )
+    ) %>% factor(., levels = c("missing", "available"))
   ) %>%
   dplyr::group_by(archive, has_coordinates) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
@@ -708,7 +702,7 @@ coord_plot <- coord_count %>%
   ) +
   coord_flip() +
   #scale_fill_manual(values = wesanderson::wes_palette("GrandBudapest1")) +
-  scale_fill_manual(values = c("lightgrey", "darkgrey")) +
+  scale_fill_manual(values = c("darkgrey", "lightgrey")) +
   ggpattern::scale_pattern_manual(
     values = c("n_approx_ind_id" = "none", "n_diff" = "stripe"),
     guide = "none"
@@ -748,7 +742,7 @@ ggsave(
 
 p_panel <- cowplot::plot_grid(
   package_publication_plot, publication_barcode_plot,
-  source_plot_simple, sources_sankey_plot,
+  source_plot_simple, sources_sankey_plot_simple,
   dating_plot_simple, coord_plot_simple,
   nrow = 3, ncol = 2, align = "v", axis = "tb",
   labels = c("A", "B", "C", "D", "E", "F")
