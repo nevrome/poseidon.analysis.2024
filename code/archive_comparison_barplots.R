@@ -65,15 +65,15 @@ package_publication_plot <- publication_count %>%
   coord_flip() +
   theme_bw() +
   theme(
-    axis.title = element_blank(),
-    legend.position = "bottom",
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    axis.title.y = element_blank(),
+    legend.position = "top",
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     legend.spacing.x = unit(0, 'cm'),
     plot.title = element_text(size = 11)
   ) +
-  ggtitle(
-    "Number of main sample-carrying publications represented in each package"
+  ylab(
+    "Number of main sample-carrying publications per package"
   )
 
 ggsave(
@@ -168,18 +168,17 @@ publication_barcode_plot <- samples_per_publication %>%
   coord_flip() +
   theme_bw() +
   theme(
-    legend.position = "bottom",
-    axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.position = "top",
+    axis.title.y = element_blank(),
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
   scale_fill_manual(values = c("yes" = "lightgrey", "no" = "darkgrey")) +
   scale_y_continuous(breaks = seq(0,18000,3000)) +
-  guides(fill = guide_legend(title = "Is the respective sample in the archive?")) +
-  ggtitle(
-    #"Samples per Publication",
-    "Number of individuals available in each archive for each referenced publication (by year)"
+  guides(fill = guide_legend(title = "Is the respective individual in the archive?")) +
+  ylab(
+    "Number of individuals for each referenced publication by year"
   )
 
 ggsave(
