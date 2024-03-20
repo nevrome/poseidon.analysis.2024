@@ -45,7 +45,6 @@ tibble::tibble(
   package = rrtools::add_dependencies_to_description(just_packages = T),
   version = purrr::map_chr(package, \(x) utils::packageVersion(x) |> as.character())
 ) |> knitr::kable()
-
 ```
 </details>
 
@@ -58,7 +57,7 @@ tibble::tibble(
 |ggplot2     |3.5.0     |
 |ggrepel     |0.9.5     |
 |ggsankey    |0.0.99999 |
-|giscoR      |0.4.0     |
+|giscoR      |0.4.1     |
 |hash        |2.2.6.3   |
 |janno       |1.0.0     |
 |magrittr    |2.0.3     |
