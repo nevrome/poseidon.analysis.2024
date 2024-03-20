@@ -114,7 +114,12 @@ save(
 #### prepare .bib file data ####
 
 pca_bib_raw <- purrr::map_dfr(
-  list.files("~/agora/community-archive", pattern = "\\.bib$", full.names = T, recursive = T),
+  list.files(
+    "~/agora/community-archive",
+    pattern = "\\.bib$",
+    full.names = T,
+    recursive = T
+  ),
   function(bib_path) {
     bib_df <- bib2df::bib2df(bib_path)
     bib_df %>% dplyr::mutate(
@@ -137,7 +142,12 @@ pca_bib <- pca_bib_raw %>%
   dplyr::ungroup()
 
 paa_bib_raw <- purrr::map_dfr(
-  list.files("~/agora/aadr-archive", pattern = "\\.bib$", full.names = T, recursive = T),
+  list.files(
+    "~/agora/aadr-archive",
+    pattern = "\\.bib$",
+    full.names = T,
+    recursive = T
+  ),
   function(bib_path) {
     bib_df <- bib2df::bib2df(bib_path)
     bib_df %>% dplyr::mutate(
