@@ -204,8 +204,19 @@ source_count_approx_ind_id <- dplyr::bind_rows(pca, paa) %>%
   dplyr::group_by(archive, source) %>%
   dplyr::summarise(n = dplyr::n(), .groups = "drop")
 
+source_count_approx_ind_id_simple <- source_count_approx_ind_id %>%
+  dplyr::mutate(
+    source = dplyr::case_when(
+      grepl("AADR", source) ~ "AADR",
+      .default = source 
+    ) %>%
+      factor(levels = c("Submitted by author", "Extracted from paper", "AADR"))
+  ) %>%
+  dplyr::group_by(archive, source) %>%
+  dplyr::summarise(n = sum(n), .groups = "drop")
+
 # simple version of the plot
-source_plot_simple <- source_count_approx_ind_id %>%
+source_plot_simple <- source_count_approx_ind_id_simple %>%
   ggplot() +
   geom_col(
     mapping = aes(x = archive, y = n, fill = source)
@@ -213,10 +224,7 @@ source_plot_simple <- source_count_approx_ind_id %>%
   coord_flip() +
   scale_fill_manual(
     values = c(
-      "AADR v42.4" = "#795043",
-      "AADR v44.3" = "#1C181A",
-      "AADR v50"   = "#D9D0D3",
-      "AADR v54.1.p1" = "#CCBA72",
+      "AADR" = "#CCBA72",
       "Extracted from paper" = "#9986A5",
       "Submitted by author" = "lightblue"
     )
@@ -229,13 +237,13 @@ source_plot_simple <- source_count_approx_ind_id %>%
   ) +
   theme_bw() +
   theme(
-    legend.position = "bottom",
+    legend.position = "top",
     axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  ggtitle(
+  xlab(
     # "Samples per original data source",
     "Number of individuals by source & primary mechanism of origin"
   )
@@ -301,14 +309,13 @@ source_plot <- source_count %>%
   ) +
   theme_bw() +
   theme(
-    legend.position = "bottom",
+    legend.position = "top",
     axis.title = element_blank(),
-    legend.margin = margin(t = -0.25, b = -0.15, unit='cm'),
+    legend.margin = margin(t = -0.1, b = -0.3, unit='cm'),
     legend.justification = "right",
     plot.title = element_text(size = 11)
   ) +
-  ggtitle(
-    # "Samples per original data source",
+  xlab(
     "Number of individuals/samples by source & primary mechanism of origin"
   )
 
