@@ -332,6 +332,93 @@ ggsave(
 
 #### D: sankey sources ####
 
+simple_levels <- c(
+  "Submitted by author",
+  "Extracted from paper",
+  "AADR",
+  "not in archive"
+)
+
+sankey_sources_input_simple <- dplyr::bind_rows(pca, paa) %>%
+  dplyr::select(Poseidon_ID, Approx_Individual_ID, archive, source) %>%
+  dplyr::mutate(
+    source = dplyr::case_when(
+      grepl("AADR", source) ~ "AADR",
+      .default = source 
+    ) %>%
+      factor(levels = simple_levels)
+  ) %>%
+  dplyr::group_by(Approx_Individual_ID, archive) %>%
+  dplyr::arrange(source) %>%
+  dplyr::slice_head(n = 1) %>%
+  dplyr::ungroup() %>%
+  tidyr::pivot_wider(
+    id_cols = "Approx_Individual_ID", names_from = "archive", values_from = "source"
+  ) %>%
+  tidyr::replace_na(list(PCA = "not in archive", PAA = "not in archive")) %>%
+  ggsankey::make_long(PCA, PAA)
+  
+
+sources_sankey_plot_simple <- sankey_sources_input_simple %>%
+  # to add a label only for missing values
+  dplyr::mutate(
+    label = dplyr::case_match(
+      node,
+      "not in archive" ~ "missing",
+      .default = ""
+    )
+  ) %>%
+  ggplot(
+    aes(
+      x = x, 
+      next_x = next_x, 
+      node = node, 
+      next_node = next_node,
+      fill = factor(node, levels = simple_levels),
+      label = label
+    )
+  ) +
+  ggsankey::geom_alluvial(
+    flow.alpha = .7,
+    width = 0.1,
+    #space = 200
+  ) +
+  ggsankey::geom_alluvial_text(
+    size = 2, color = "white"
+  ) +
+  labs(x = NULL) +
+  scale_fill_manual(
+    values = c(
+      "AADR" = "#CCBA72",
+      "Extracted from paper" = "#9986A5",
+      "Submitted by author" = "lightblue"
+    ),
+    na.value = "darkgrey"
+  ) +
+  scale_x_discrete(expand = c(0.1, 0.1)) +
+  guides(fill = guide_legend(title = "Original data source")) +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 11)
+  ) +
+  coord_flip() +
+  ylab(
+    # "Samples matching across archives",
+    "Number of individuals that match across the archives by data source"
+  )
+
+ggsave(
+  paste0("plots/figure_barplots_D_simple.pdf"),
+  plot = sources_sankey_plot_simple,
+  device = "pdf",
+  scale = 0.7,
+  dpi = 300,
+  width = 250, height = 70, units = "mm",
+  limitsize = F,
+  bg = "white"
+)
+
 sankey_sources_input <- dplyr::bind_rows(pca, paa) %>%
   dplyr::select(Poseidon_ID, Approx_Individual_ID, archive, source) %>%
   dplyr::mutate(source = factor(source, levels = c(levels(source), "not in archive"))) %>%
@@ -345,10 +432,15 @@ sankey_sources_input <- dplyr::bind_rows(pca, paa) %>%
   tidyr::replace_na(list(PCA = "not in archive", PAA = "not in archive")) %>%
   ggsankey::make_long(PCA, PAA)
 
-source_colour_mapping <- wesanderson::wes_palette("IsleofDogs1")[1:6]
-names(source_colour_mapping) <- levels(pca$source)
-
 sources_sankey_plot <- sankey_sources_input %>%
+  # to add a label only for missing values
+  dplyr::mutate(
+    label = dplyr::case_match(
+      node,
+      "not in archive" ~ "missing",
+      .default = ""
+    )
+  ) %>%
   ggplot(
     aes(
       x = x, 
@@ -356,13 +448,16 @@ sources_sankey_plot <- sankey_sources_input %>%
       node = node, 
       next_node = next_node,
       fill = factor(node, levels = levels(pca$source)),
-      label = node
+      label = label
     )
   ) +
   ggsankey::geom_alluvial(
     flow.alpha = .7,
     width = 0.1,
     #space = 200
+  ) +
+  ggsankey::geom_alluvial_text(
+    size = 2, color = "white"
   ) +
   labs(x = NULL) +
   scale_fill_manual(
@@ -384,7 +479,7 @@ sources_sankey_plot <- sankey_sources_input %>%
     plot.title = element_text(size = 11)
   ) +
   coord_flip() +
-  ggtitle(
+  ylab(
     # "Samples matching across archives",
     "Number of individuals that match across the archives (by data source)"
   )
