@@ -55,7 +55,7 @@ tibble::tibble(
 |dplyr       |1.1.4     |
 |ggpattern   |1.0.1     |
 |ggplot2     |3.5.0     |
-|ggrepel     |0.9.5     |
+|ggrepel     |0.9.4     |
 |ggsankey    |0.0.99999 |
 |giscoR      |0.4.1     |
 |hash        |2.2.6.3   |
