@@ -750,9 +750,9 @@ p_panel <- cowplot::plot_grid(
 
 p_title <- cowplot::ggdraw() +
   cowplot::draw_label(
-    "Comparison of PAA (AADR V54.1.p1) and PCA by different metrics",
+    "Comparison of PCA and PAA by different metrics",
     fontface = "bold",
-    hjust = 1.11
+    hjust = 1.51
   )
 
 p <- cowplot::plot_grid(p_title, p_panel, ncol = 1, rel_heights = c(0.05, 1))
