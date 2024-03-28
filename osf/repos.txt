@@ -6,3 +6,4 @@ janno,https://github.com/poseidon-framework/janno/archive/refs/heads/master.zip
 poseidon-framework.github.io,https://github.com/poseidon-framework/poseidon-framework.github.io/archive/refs/heads/master.zip
 poseidon-blog,https://github.com/poseidon-framework/poseidon-blog/archive/refs/heads/main.zip
 aadr2poseidon,https://github.com/poseidon-framework/aadr2poseidon/archive/refs/heads/main.zip
+poseidon.analysis.2024,https://github.com/nevrome/poseidon.analysis.2024/archive/refs/heads/main.zip
