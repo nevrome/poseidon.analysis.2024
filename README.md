@@ -6,7 +6,7 @@ to be announced
 
 ### Compendium DOI (long-term archive):
 
-https://doi.org/10.17605/OSF.IO/ZUQGB
+https://doi.org/10.17605/OSF.IO/ZUQGB at Open Science Framework (OSF)
 
 The files in this archived storage will generate the results as found in the publication. The files hosted on GitHub are the development versions and may have changed since the paper was published.
 
@@ -21,6 +21,7 @@ This repository contains the following main top level directories:
 - `code`: The R scripts necessary to reproduce the analysis and create the figures. Some scripts provide code beyond what is required to reproduce figures and results in the publication (e.g. scripts to create didactic figures for presentations).
 - `data`: Intermediate data output by the scripts, not tracked by Git.
 - `data_tracked`: Input data files manually or only semi-automatically created for this analysis.
+- `osf`: Scripts to prepare the data upload to the Open Science Framework (OSF) long-term archive.
 - `plots`: Rendered versions of the plots for the publication, not tracked by Git.
 - `schemata`: Schematic drawings created for the paper.
 
