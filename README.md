@@ -6,13 +6,13 @@ to be announced
 
 ### Compendium DOI (long-term archive):
 
-to be announced
+https://doi.org/10.17605/OSF.IO/ZUQGB
 
 The files in this archived storage will generate the results as found in the publication. The files hosted on GitHub are the development versions and may have changed since the paper was published.
 
 ### Authors of this repository:
 
-- Clemens Schmid [![ORCiD](https://img.shields.io/badge/ORCiD-0000--0003--3448--5715-green.svg)](http://orcid.org/0000-0003-3448-5715)
+Clemens Schmid [![ORCiD](https://img.shields.io/badge/ORCiD-0000--0003--3448--5715-green.svg)](http://orcid.org/0000-0003-3448-5715)
 
 ### Overview of contents:
 
@@ -35,7 +35,7 @@ The following versions of the Poseidon public archives downloaded on 2024-03-15 
 
 The archive.chron files include all present and past package versions, but only the latest ones were considered here.
 
-The analysis was performed with R v4.3.2 using the following packages and package versions as available on CRAN on 2024-03-13:
+The analysis was performed with R v4.3.2 using the following packages and package versions as available on CRAN (Comprehensive R Archive Network) on 2024-03-13:
 
 <details>
 <summary>Generated with this code</summary>
