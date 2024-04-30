@@ -4,6 +4,10 @@
 
 to be announced
 
+**Preprint (2024-04-16)**
+
+Schmid, C., Ghalichi, A., Lamnidis, T. C., Mudiyanselage, D. B. A., Haak, W., & Schiffels, S. (2024). Poseidon – A framework for archaeogenetic human genotype data management. bioRxiv. https://doi.org/10.1101/2024.04.12.589180 
+
 ### Compendium DOI (long-term archive):
 
 https://doi.org/10.17605/OSF.IO/ZUQGB at Open Science Framework (OSF)
