@@ -8,7 +8,7 @@
    height="432.74933"
    viewBox="0 0 489.22534 432.74933"
    sodipodi:docname="schema_overview.svg"
-   inkscape:version="1.3.1 (9b9bdc1480, 2023-11-25, custom)"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -325,11 +325,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="1.8008061"
-     inkscape:cx="252.94228"
-     inkscape:cy="221.28979"
+     inkscape:cx="252.66463"
+     inkscape:cy="221.56744"
      inkscape:window-width="1920"
-     inkscape:window-height="1049"
-     inkscape:window-x="0"
+     inkscape:window-height="1056"
+     inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="g1"
@@ -445,9 +445,9 @@
        style="white-space:pre;inline-size:127.936"><tspan
          x="0"
          y="0"
-         id="tspan2"><tspan
+         id="tspan42"><tspan
            style="font-weight:bold;font-size:11px;font-family:'Open Sans';-inkscape-font-specification:'Open Sans Bold';fill:#100f0d"
-           id="tspan1">The Poseiden Package</tspan></tspan></text>
+           id="tspan3">The Poseidon Package</tspan></tspan></text>
     <text
        id="text25"
        xml:space="preserve"
@@ -455,15 +455,15 @@
        style="font-size:7px;white-space:pre;inline-size:146.643"><tspan
          x="0"
          y="0"
-         id="tspan5"><tspan
+         id="tspan44"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';fill:#100f0d"
-           id="tspan4">Open data format for genotype data and
+           id="tspan43">Open data format for genotype data and
 </tspan></tspan><tspan
          x="0"
-         y="8.7589835"
-         id="tspan7"><tspan
+         y="8.75"
+         id="tspan50"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';fill:#100f0d"
-           id="tspan6">(spatiotemporal) context information </tspan></tspan></text>
+           id="tspan45">(spatiotemporal) context information </tspan></tspan></text>
     <path
        id="path27"
        d="M 195.512,87.903 H 169.12 v 131.482 h 26.392 z"
@@ -555,9 +555,9 @@
        style="white-space:pre;inline-size:71.2156;display:inline"><tspan
          x="0"
          y="0"
-         id="tspan9"><tspan
+         id="tspan52"><tspan
            style="font-weight:bold;font-size:11px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#100f0d"
-           id="tspan8">Minotaur</tspan></tspan></text>
+           id="tspan51">Minotaur</tspan></tspan></text>
     <path
        id="path50"
        d="m 0,0 c 0.046,-0.343 0.841,-2.281 0.417,-2.349 -0.129,0.504 -0.125,0.51 -0.3,0.889 -0.311,0.565 -2.136,2.326 -4.371,1.961 1.915,-1.167 2.71,-1.64 3.473,-3.278 -0.384,-0.168 -0.064,-0.197 -0.064,-0.643 v -3.584 c 0,-0.446 -0.32,-0.475 0.064,-0.643 -1.211,-1.732 -2.304,-2.289 -3.473,-3.278 2.278,0.001 4.01,1.548 4.371,1.961 0.249,0.456 0.251,0.453 0.478,0.889 0.284,-0.05 -0.479,-1.982 -0.595,-2.349 0.934,-0.323 0.905,-0.278 1.265,-0.061 0.631,0.406 0.825,0.975 0.885,1.517 0.092,-0.007 0.186,-0.012 0.283,-0.012 1.071,0.033 1.89,1.471 2.771,1.785 0.697,0.232 1.416,-0.565 1.951,-0.087 0.581,0.518 0.863,1.196 0.863,2.07 0,0.874 -0.282,1.552 -0.863,2.07 C 6.62,-2.664 5.901,-3.461 5.204,-3.229 4.273,-2.893 3.231,-1.451 2.433,-1.444 2.336,-1.444 2.242,-1.449 2.15,-1.456 2.09,-0.914 1.896,-0.345 1.265,0.061 0.654,0.295 0.621,0.306 0,0 Z"
@@ -597,33 +597,33 @@
        y="0"><tspan
          x="21.480225"
          y="0"
-         id="tspan11"><tspan
+         id="tspan54"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan10">Standardized 
+           id="tspan53">Standardized 
 </tspan></tspan><tspan
          x="21.480225"
-         y="8.7589835"
-         id="tspan13"><tspan
+         y="8.75"
+         id="tspan56"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan12">genotype
+           id="tspan55">genotype
 </tspan></tspan><tspan
          x="21.480225"
-         y="17.517968"
-         id="tspan15"><tspan
+         y="17.5"
+         id="tspan58"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan14">data 
+           id="tspan57">data 
 </tspan></tspan><tspan
          x="21.480225"
-         y="26.276951"
-         id="tspan17"><tspan
+         y="26.250001"
+         id="tspan60"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan16">generation 
+           id="tspan59">generation 
 </tspan></tspan><tspan
          x="21.480225"
-         y="35.035935"
-         id="tspan19"><tspan
+         y="35.000001"
+         id="tspan62"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan18">pipeline </tspan></tspan></text>
+           id="tspan61">pipeline </tspan></tspan></text>
     <path
        id="path64"
        d="M 73.76,48.248 H 58.507 V 59.194 H 73.76 Z"
@@ -711,51 +711,51 @@
        y="0"><tspan
          x="19.472168"
          y="0"
-         id="tspan25"><tspan
+         id="tspan64"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan21">Software to 
+           id="tspan63">Software to 
 </tspan></tspan><tspan
          x="19.472168"
-         y="8.7589835"
-         id="tspan27"><tspan
+         y="8.75"
+         id="tspan66"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan26">download, 
+           id="tspan65">download, 
 </tspan></tspan><tspan
          x="19.472168"
-         y="17.517968"
-         id="tspan29"><tspan
+         y="17.5"
+         id="tspan68"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan28">subset, 
+           id="tspan67">subset, 
 </tspan></tspan><tspan
          x="19.472168"
-         y="26.276951"
-         id="tspan31"><tspan
+         y="26.250001"
+         id="tspan70"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan30">merge, 
+           id="tspan69">merge, 
 </tspan></tspan><tspan
          x="19.472168"
-         y="35.035935"
-         id="tspan33"><tspan
+         y="35.000001"
+         id="tspan72"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan32">query, 
+           id="tspan71">query, 
 </tspan></tspan><tspan
          x="19.472168"
-         y="43.794918"
-         id="tspan35"><tspan
+         y="43.750001"
+         id="tspan74"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan34">analyse and 
+           id="tspan73">analyse and 
 </tspan></tspan><tspan
          x="19.472168"
-         y="52.553902"
-         id="tspan37"><tspan
+         y="52.500001"
+         id="tspan76"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan36">validate 
+           id="tspan75">validate 
 </tspan></tspan><tspan
          x="19.472168"
-         y="61.312886"
-         id="tspan39"><tspan
+         y="61.250001"
+         id="tspan78"><tspan
            style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans';text-align:center;text-anchor:middle;fill:#100f0d"
-           id="tspan38">packages</tspan></tspan></text>
+           id="tspan77">packages</tspan></tspan></text>
     <g
        id="g1-4"
        transform="matrix(3.7795276,0,0,3.7795276,125.74556,173.74304)">
@@ -782,9 +782,9 @@
          id="text1"><tspan
            x="-12.520882"
            y="-7.7279501"
-           id="tspan41"><tspan
+           id="tspan80"><tspan
              style="font-family:'Open Sans';-inkscape-font-specification:'Open Sans'"
-             id="tspan40">Community-maintained data storage &amp; Web-API</tspan></tspan></text>
+             id="tspan79">Community-maintained data storage &amp; Web-API</tspan></tspan></text>
     </g>
   </g>
 </svg>
