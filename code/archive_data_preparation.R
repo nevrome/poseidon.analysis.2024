@@ -46,7 +46,9 @@ cleaningPatterns <- c(
   "\\.bam",
   "\\.sorted",
   "\\.fixedHeader",
-  "\\_oEEF"
+  "\\_oEEF",
+  "\\_LC",
+  "\\_ss"
 ) %>% paste0(collapse = "|")
 
 cleanPoseidonIDs <- function(x) {
@@ -55,7 +57,8 @@ cleanPoseidonIDs <- function(x) {
       Approx_Individual_ID = stringr::str_remove_all(
         Poseidon_ID, cleaningPatterns
       ) %>%
-        stringr::str_replace_all(., "\\+", "\\_")
+        stringr::str_replace_all(., "\\+", "\\_"),
+      .before = "Poseidon_ID"
     )
 }
 
@@ -71,9 +74,12 @@ pca <- pca_raw %>%
       purrr::map_lgl(Publication, \(x) "AADRv50" %in% x)  ~ "AADR v50",
       TRUE                                                ~ "Extracted from paper"
     ),
-    main_publication = purrr::map_chr(Publication, \(x) x[[1]])
+    main_publication = purrr::map_chr(Publication, \(x) x[[1]]),
+    .before = "Poseidon_ID"
   ) %>%
   cleanPoseidonIDs()
+
+#janno::write_janno(pca, "poseidon_community_archive_2024-07-15.tsv")
 
 paa <- paa_raw %>%
   tibble::as_tibble() %>%
