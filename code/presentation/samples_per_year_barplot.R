@@ -10,12 +10,16 @@ load("data/bib_data.RData")
 
 individuals_with_year <- paa %>%
   dplyr::filter(Date_Type != "modern") %>%
-  dplyr::select(Approx_Individual_ID, Publication) %>%
-  dplyr::mutate(Publication = purrr::map_chr(Publication, \(x) x[[1]])) %>%
-  dplyr::left_join(paa_bib, by = c("Publication" = "bibtexkey")) %>%
-  dplyr::select(Approx_Individual_ID, year) %>%
+  # dplyr::select(Approx_Individual_ID, Publication) %>%
+  # dplyr::mutate(Publication = purrr::map_chr(Publication, \(x) x[[1]])) %>%
+  # dplyr::left_join(paa_bib, by = c("Publication" = "bibtexkey")) %>%
+  # dplyr::select(Approx_Individual_ID, year) %>%
+  # dplyr::arrange(dplyr::desc(year)) %>%
+  # dplyr::distinct(Approx_Individual_ID, .keep_all = TRUE)
+  dplyr::transmute(Approx_Individual_ID, year = as.integer(AADR_Year_First_Publication)) %>%
   dplyr::arrange(dplyr::desc(year)) %>%
   dplyr::distinct(Approx_Individual_ID, .keep_all = TRUE)
+  
 
 individuals_per_year <- individuals_with_year %>%
   dplyr::group_by(year) %>%
@@ -31,7 +35,7 @@ individuals_per_year <- individuals_with_year %>%
 #### prepare plot ####
 
 p <- individuals_per_year %>%
-  dplyr::filter(year < 2023) %>%
+  dplyr::filter(year < 2024) %>%
   ggplot() +
   geom_col(aes(x = year, y = n)) +
   geom_text(
@@ -41,7 +45,7 @@ p <- individuals_per_year %>%
     ),
     vjust = -0.25, size = 3
   ) +
-  scale_x_continuous(breaks = 2010:2022) +
+  scale_x_continuous(breaks = 2010:2023) +
   theme_bw() +
   theme(axis.title.x = element_blank()) +
   ylab("Approx. nr of ancient individuals")

@@ -4,13 +4,15 @@ library(magrittr)
 
 pca_raw <- janno::read_janno("~/agora/community-archive", validate = F)
 pca_author_packages <- readr::read_lines("data_tracked/author_submitted_packages.txt")
-paa_raw <- janno::read_janno("~/agora/aadr-archive", validate = F)
+paa_raw <- list.files("~/agora/aadr-archive", pattern = "62", full.names = TRUE) %>%
+  janno::read_janno(validate = F)
 
 cleaningPatterns <- c(
   "\\.HO",
   "\\.DG",
   "\\.SG",
   "\\.SDG",
+  "\\.AG",
   "\\_WGA",
   "\\_noUDG",
   "\\_udg",
@@ -48,7 +50,8 @@ cleaningPatterns <- c(
   "\\.fixedHeader",
   "\\_oEEF",
   "\\_LC",
-  "\\_ss"
+  "\\_ss",
+  "_original"
 ) %>% paste0(collapse = "|")
 
 cleanPoseidonIDs <- function(x) {
@@ -86,10 +89,16 @@ paa <- paa_raw %>%
   dplyr::mutate(
     archive = factor("PAA", levels = c("PAA", "PCA") %>% rev()),
     package = source_file %>% dirname(),
-    source = "AADR v54.1.p1",
+    source = "AADR v62.0",
     main_publication = purrr::map_chr(Publication, \(x) x[[1]])
   ) %>%
   cleanPoseidonIDs()
+
+paa %>%
+  dplyr::mutate(main_id = purrr::map_chr(Alternative_IDs, \(x) x[[1]]), .after = "Approx_Individual_ID") %>%
+  dplyr::filter(
+    Approx_Individual_ID != main_id
+  )
 
 # check for avoidable mismatches in Approx_Individual_ID
 # dplyr::bind_rows(pca, paa) %>%
